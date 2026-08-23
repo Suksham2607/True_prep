@@ -18,6 +18,7 @@ class UserOut(BaseModel):
     name: str
     email: EmailStr
     created_at: datetime
+    has_given_consent: bool
 
     model_config = ConfigDict(from_attributes=True)
 
