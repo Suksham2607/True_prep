@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api, { getToken, clearToken } from "../services/api";
+import api, { clearToken } from "../services/api";
 import styles from "./Dashboard.module.css";
 
 // Sessions/scoring features don't exist yet (that's Milestones 4-7), so
@@ -32,12 +32,9 @@ function Dashboard() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // No token at all - don't even try the API call, just send them to login.
-    if (!getToken()) {
-      navigate("/login");
-      return;
-    }
-
+    // RequireAuth (in App.jsx) already guarantees there's a token before
+    // this component ever mounts, so this effect can go straight to
+    // fetching data.
     async function loadDashboard() {
       try {
         const [userRes, sessionsRes] = await Promise.all([
@@ -99,7 +96,7 @@ function Dashboard() {
           <span>Dashboard</span>
         </button>
 
-        <button className={styles.menuItem} onClick={comingSoon}>
+        <button className={styles.menuItem} onClick={() => navigate("/consent")}>
           <span className={styles.menuIcon}>◉</span>
           <span>Detection</span>
         </button>
@@ -174,7 +171,7 @@ function Dashboard() {
               </p>
             </div>
 
-            <button className={styles.startBtn} onClick={comingSoon}>
+            <button className={styles.startBtn} onClick={() => navigate("/consent")}>
               Start Assessment →
             </button>
           </div>
@@ -224,7 +221,7 @@ function Dashboard() {
               </div>
 
               <div className={styles.actions}>
-                <button className={styles.action} onClick={comingSoon}>
+                <button className={styles.action} onClick={() => navigate("/consent")}>
                   <div className={styles.actionIcon}>🧠</div>
                   <h3>New Assessment</h3>
                   <p>Start a real-time anxiety detection session.</p>
