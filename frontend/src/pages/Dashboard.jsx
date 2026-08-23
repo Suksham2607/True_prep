@@ -60,6 +60,13 @@ function Dashboard() {
     navigate("/login");
   }
 
+  // Consent has to happen before the camera-based Face Check can run, so
+  // route through the consent screen first if this user hasn't done that
+  // yet, otherwise go straight to the real feature.
+  function startAssessment() {
+    navigate(user?.has_given_consent ? "/face-check" : "/consent");
+  }
+
   if (loading) {
     return (
       <div className={styles.page}>
@@ -96,7 +103,7 @@ function Dashboard() {
           <span>Dashboard</span>
         </button>
 
-        <button className={styles.menuItem} onClick={() => navigate("/consent")}>
+        <button className={styles.menuItem} onClick={startAssessment}>
           <span className={styles.menuIcon}>◉</span>
           <span>Detection</span>
         </button>
@@ -171,7 +178,7 @@ function Dashboard() {
               </p>
             </div>
 
-            <button className={styles.startBtn} onClick={() => navigate("/consent")}>
+            <button className={styles.startBtn} onClick={startAssessment}>
               Start Assessment →
             </button>
           </div>
@@ -221,7 +228,7 @@ function Dashboard() {
               </div>
 
               <div className={styles.actions}>
-                <button className={styles.action} onClick={() => navigate("/consent")}>
+                <button className={styles.action} onClick={startAssessment}>
                   <div className={styles.actionIcon}>🧠</div>
                   <h3>New Assessment</h3>
                   <p>Start a real-time anxiety detection session.</p>
