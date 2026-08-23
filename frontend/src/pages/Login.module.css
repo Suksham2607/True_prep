@@ -1,0 +1,335 @@
+/*
+  This is the original True Predict login page CSS, moved as-is into a
+  CSS Module. Two things changed from the original <style> block, both
+  just to make it safe to load alongside the register/dashboard pages
+  in the same single-page app (in plain HTML each page's CSS only ever
+  applied to that one page - in a bundled React app all page CSS loads
+  together, so a bare `body` or `input` rule here would leak onto the
+  other pages):
+
+  1. `* { ... }`    -> `.page, .page *`  (scoped to this page's own root div)
+  2. `body { ... }` -> `.page`           (this page's root div stands in for body)
+
+  Every other rule/value below is unchanged.
+*/
+
+.page,
+.page * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e9f8f8, #dceff5);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 1150px;
+  min-height: 650px;
+
+  background: white;
+  border-radius: 25px;
+  overflow: hidden;
+  display: flex;
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+/* ================= LEFT SIDE ================= */
+
+.leftSection {
+  width: 55%;
+  background: linear-gradient(135deg, #087f8c, #045d68);
+  color: white;
+  padding: 60px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.logo {
+  font-size: 34px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.logo span {
+  color: #8ff0df;
+}
+
+.tag {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 13px;
+  margin-bottom: 25px;
+}
+
+.leftSection h1 {
+  font-size: 46px;
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+
+.leftSection h1 span {
+  color: #8ff0df;
+}
+
+.description {
+  font-size: 17px;
+  line-height: 1.7;
+  color: #e5ffff;
+  max-width: 520px;
+}
+
+.features {
+  margin-top: 35px;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  margin: 16px 0;
+  font-size: 16px;
+}
+
+.featureIcon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-right: 15px;
+  font-size: 20px;
+}
+
+/* ================= RIGHT SIDE ================= */
+
+.rightSection {
+  width: 45%;
+  padding: 55px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.loginTitle {
+  font-size: 32px;
+  color: #12343b;
+  margin-bottom: 8px;
+}
+
+.loginSubtitle {
+  color: #777;
+  margin-bottom: 30px;
+  font-size: 15px;
+}
+
+/* INPUT */
+
+.inputGroup {
+  margin-bottom: 20px;
+}
+
+.inputGroup label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.inputGroup input {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  outline: none;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.inputGroup input:focus {
+  border-color: #087f8c;
+  box-shadow: 0 0 0 3px rgba(8, 127, 140, 0.12);
+}
+
+/* PASSWORD */
+
+.passwordBox {
+  position: relative;
+}
+
+.passwordBox input {
+  padding-right: 65px;
+}
+
+.showPassword {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  color: #087f8c;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* OPTIONS */
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  font-size: 13px;
+}
+
+.remember {
+  display: flex;
+  gap: 7px;
+  color: #555;
+  align-items: center;
+}
+
+.forgot {
+  color: #087f8c;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.forgot:hover {
+  text-decoration: underline;
+}
+
+/* LOGIN BUTTON */
+
+.loginBtn {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background: #087f8c;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.loginBtn:hover {
+  background: #065f69;
+  transform: translateY(-2px);
+}
+
+.loginBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* DIVIDER */
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 25px 0;
+  color: #aaa;
+  font-size: 13px;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #ddd;
+}
+
+.divider span {
+  padding: 0 12px;
+}
+
+/* SIGNUP */
+
+.signup {
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+}
+
+.signup a {
+  color: #087f8c;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.signup a:hover {
+  text-decoration: underline;
+}
+
+/* MESSAGE */
+
+.message {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 800px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .leftSection,
+  .rightSection {
+    width: 100%;
+  }
+
+  .leftSection {
+    padding: 40px;
+  }
+
+  .rightSection {
+    padding: 40px;
+  }
+
+  .leftSection h1 {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 500px) {
+  .leftSection,
+  .rightSection {
+    padding: 30px 25px;
+  }
+
+  .leftSection h1 {
+    font-size: 30px;
+  }
+
+  .options {
+    font-size: 12px;
+  }
+}

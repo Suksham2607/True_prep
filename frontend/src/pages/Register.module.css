@@ -1,0 +1,292 @@
+/*
+  Same approach as Login.module.css: original TruePredict register page
+  CSS unchanged, except `*` and `body` are scoped to `.page` so this
+  page's styles can't leak onto the login/dashboard pages once all three
+  are bundled into one app.
+*/
+
+.page,
+.page * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.page {
+  font-family: Inter, Arial, sans-serif;
+  min-height: 100vh;
+  background: #f7fafc;
+  color: #102a43;
+}
+
+.navbar {
+  height: 76px;
+  padding: 0 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border-bottom: 1px solid #e6edf2;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.brandLogo {
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  background: #0b7285;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 800;
+}
+
+.brandName {
+  font-size: 21px;
+  font-weight: 800;
+  color: #102a43;
+}
+
+.brandName span {
+  color: #0b7285;
+}
+
+.back {
+  color: #0b7285;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.pageBody {
+  min-height: calc(100vh - 76px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.registerCard {
+  width: 100%;
+  max-width: 950px;
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  background: white;
+  border: 1px solid #e5edf2;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 18px 50px rgba(16, 42, 67, 0.1);
+}
+
+.side {
+  background: #0b7285;
+  color: white;
+  padding: 50px 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.side h1 {
+  font-size: 38px;
+  line-height: 1.15;
+  margin-bottom: 18px;
+}
+
+.side h1 span {
+  color: #9ff3e4;
+}
+
+.side p {
+  color: #d9f5f5;
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.benefits {
+  margin-top: 30px;
+}
+
+.benefit {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 16px 0;
+  font-size: 13px;
+}
+
+.check {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.formArea {
+  padding: 48px;
+}
+
+.formArea h2 {
+  font-size: 28px;
+  margin-bottom: 7px;
+}
+
+.subtitle {
+  color: #829ab1;
+  font-size: 13px;
+  margin-bottom: 25px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.formGroup {
+  margin-bottom: 17px;
+}
+
+.page label {
+  display: block;
+  color: #334e68;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 7px;
+}
+
+.page input {
+  width: 100%;
+  height: 46px;
+  border: 1px solid #d9e2ec;
+  border-radius: 8px;
+  padding: 0 13px;
+  outline: none;
+  font-size: 13px;
+}
+
+.page input:focus {
+  border-color: #0b7285;
+  box-shadow: 0 0 0 3px rgba(11, 114, 133, 0.1);
+}
+
+.passwordBox {
+  position: relative;
+}
+
+.passwordBox input {
+  padding-right: 60px;
+}
+
+.show {
+  position: absolute;
+  right: 12px;
+  top: 14px;
+  color: #0b7285;
+  font-size: 11px;
+  font-weight: 700;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.terms {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  color: #627d98;
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 5px 0 20px;
+}
+
+.terms input {
+  width: auto;
+  height: auto;
+  margin-top: 2px;
+}
+
+.terms a {
+  color: #0b7285;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.createBtn {
+  width: 100%;
+  height: 48px;
+  border: none;
+  border-radius: 8px;
+  background: #0b7285;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.createBtn:hover {
+  background: #095c6b;
+}
+
+.createBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.formMessage {
+  text-align: center;
+  font-size: 12px;
+  margin-top: 13px;
+  font-weight: 700;
+}
+
+.login {
+  text-align: center;
+  margin-top: 20px;
+  color: #627d98;
+  font-size: 12px;
+}
+
+.login a {
+  color: #0b7285;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+@media (max-width: 750px) {
+  .registerCard {
+    grid-template-columns: 1fr;
+  }
+
+  .side {
+    padding: 35px;
+  }
+
+  .formArea {
+    padding: 35px;
+  }
+}
+
+@media (max-width: 500px) {
+  .row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .navbar {
+    padding: 0 20px;
+  }
+
+  .side h1 {
+    font-size: 30px;
+  }
+}

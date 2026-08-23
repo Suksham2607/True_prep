@@ -1,0 +1,448 @@
+/*
+  Same approach as the other two pages: original TruePredict dashboard
+  CSS unchanged, `*` and `body` scoped to `.page` so it can't leak onto
+  the login/register pages once bundled together.
+*/
+
+.page,
+.page * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.page {
+  font-family: Inter, Arial, sans-serif;
+  background: #f5f8fa;
+  color: #102a43;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 240px;
+  height: 100vh;
+  background: #102a43;
+  color: white;
+  padding: 25px 15px;
+  z-index: 10;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px;
+  margin-bottom: 45px;
+}
+
+.brandLogo {
+  width: 38px;
+  height: 38px;
+  background: #0b7285;
+  border-radius: 9px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.brandName {
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.brandName span {
+  color: #67d6c5;
+}
+
+.menuTitle {
+  color: #829ab1;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 0 12px;
+  margin-bottom: 10px;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 5px;
+  color: #bcccdc;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 13px;
+  transition: 0.2s;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  text-align: left;
+}
+
+.menuItem:hover,
+.menuItemActive {
+  background: #1c4966;
+  color: white;
+}
+
+.menuIcon {
+  width: 20px;
+  text-align: center;
+}
+
+.sidebarBottom {
+  position: absolute;
+  bottom: 25px;
+  left: 15px;
+  right: 15px;
+}
+
+/* ================= MAIN ================= */
+
+.main {
+  margin-left: 240px;
+  min-height: 100vh;
+}
+
+/* TOPBAR */
+
+.topbar {
+  height: 72px;
+  background: white;
+  border-bottom: 1px solid #e5edf2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 35px;
+}
+
+.pageTitle {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.topRight {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.notification {
+  width: 35px;
+  height: 35px;
+  border-radius: 8px;
+  background: #f1f5f8;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.avatar {
+  width: 35px;
+  height: 35px;
+  background: #0b7285;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.profileName {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* CONTENT */
+
+.content {
+  padding: 35px;
+}
+
+.welcome {
+  margin-bottom: 30px;
+}
+
+.welcome h1 {
+  font-size: 27px;
+  margin-bottom: 7px;
+}
+
+.welcome p {
+  color: #829ab1;
+  font-size: 13px;
+}
+
+/* ================= HERO ================= */
+
+.hero {
+  background: #0b7285;
+  color: white;
+  border-radius: 15px;
+  padding: 28px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.hero h2 {
+  font-size: 21px;
+  margin-bottom: 8px;
+}
+
+.hero p {
+  color: #d9f5f5;
+  font-size: 12px;
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+.startBtn {
+  background: white;
+  color: #0b7285;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.startBtn:hover {
+  background: #e8ffff;
+}
+
+/* ================= STAT CARDS ================= */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 17px;
+  margin-bottom: 25px;
+}
+
+.statCard {
+  background: white;
+  border: 1px solid #e5edf2;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.statLabel {
+  color: #829ab1;
+  font-size: 11px;
+  margin-bottom: 9px;
+}
+
+.statValue {
+  font-size: 25px;
+  font-weight: 800;
+  color: #102a43;
+}
+
+.statStatus {
+  color: #20a39e;
+  font-size: 10px;
+  margin-top: 5px;
+}
+
+/* ================= GRID ================= */
+
+.dashboardGrid {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr;
+  gap: 20px;
+}
+
+.panel {
+  background: white;
+  border: 1px solid #e5edf2;
+  border-radius: 13px;
+  padding: 24px;
+}
+
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.panelHeader h2 {
+  font-size: 16px;
+}
+
+.viewAll {
+  color: #0b7285;
+  font-size: 11px;
+  font-weight: 700;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+/* QUICK ACTIONS */
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 13px;
+}
+
+.action {
+  border: 1px solid #e5edf2;
+  background: #fbfdfe;
+  padding: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: 0.2s;
+}
+
+.action:hover {
+  border-color: #0b7285;
+  transform: translateY(-2px);
+}
+
+.actionIcon {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.action h3 {
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+.action p {
+  color: #829ab1;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+/* RECENT */
+
+.record {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #edf2f5;
+}
+
+.record:last-child {
+  border-bottom: none;
+}
+
+.recordDate {
+  color: #829ab1;
+  font-size: 10px;
+}
+
+.recordTitle {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.badge {
+  padding: 5px 9px;
+  border-radius: 20px;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.low {
+  background: #e5f7f1;
+  color: #16825d;
+}
+
+.moderate {
+  background: #fff4dc;
+  color: #a56a00;
+}
+
+.high {
+  background: #fde8e8;
+  color: #c53030;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1000px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboardGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 750px) {
+  .sidebar {
+    width: 65px;
+    padding: 20px 8px;
+  }
+
+  .brandName,
+  .menuTitle,
+  .menuItem span:not(.menuIcon),
+  .sidebarBottom .menuItem span:not(.menuIcon) {
+    display: none;
+  }
+
+  .brand {
+    justify-content: center;
+    padding: 0;
+  }
+
+  .menuItem {
+    justify-content: center;
+  }
+
+  .main {
+    margin-left: 65px;
+  }
+
+  .content {
+    padding: 22px;
+  }
+
+  .hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 500px) {
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    grid-template-columns: 1fr;
+  }
+
+  .profileName {
+    display: none;
+  }
+}

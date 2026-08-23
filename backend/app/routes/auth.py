@@ -7,7 +7,8 @@ from app.schemas.users import UserCreate, UserLogin, UserOut, Token
 from app.services.auth import (
     hash_password,
     verify_password,
-    create_access_token
+    create_access_token,
+    get_current_user
 )
 
 router = APIRouter(
@@ -65,3 +66,16 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
         "access_token": token,
         "token_type": "bearer"
     }
+
+
+@router.get("/me", response_model=UserOut)
+def get_me(current_user: User = Depends(get_current_user)):
+    """
+    Returns the logged-in user's own profile. The frontend calls this
+    right after loading the dashboard (using the saved JWT) so it can
+    show the real name/email/consent status instead of placeholder text.
+    `get_current_user` already decodes the token and 401s automatically
+    if it's missing, expired, or invalid, so this route body has nothing
+    left to do but hand back the user it found.
+    """
+    return current_user
