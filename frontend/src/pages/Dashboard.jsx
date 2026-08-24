@@ -75,6 +75,13 @@ function Dashboard() {
     navigate(user?.has_given_consent ? "/calibration" : "/consent");
   }
 
+  // Milestone 8: same consent gate, routed to the LLM-driven mock
+  // interview instead - it's audio-only but still needs mic access,
+  // which the same consent record covers.
+  function startMockInterview() {
+    navigate(user?.has_given_consent ? "/mock-interview" : "/consent");
+  }
+
   if (loading) {
     return (
       <div className={styles.page}>
@@ -253,10 +260,10 @@ function Dashboard() {
                   <p>Run a 60-second session to set your personal baseline.</p>
                 </button>
 
-                <button className={styles.action} onClick={comingSoon}>
-                  <div className={styles.actionIcon}>📊</div>
-                  <h3>Latest Prediction</h3>
-                  <p>Review your latest prediction result.</p>
+                <button className={styles.action} onClick={startMockInterview}>
+                  <div className={styles.actionIcon}>💬</div>
+                  <h3>Mock Interview</h3>
+                  <p>Practice a live Q&amp;A with an AI interviewer.</p>
                 </button>
 
                 <button className={styles.action} onClick={comingSoon}>

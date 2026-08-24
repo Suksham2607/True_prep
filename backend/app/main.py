@@ -7,6 +7,7 @@ from app.routes.sessions import router as sessions_router
 from app.routes.baseline_profile import router as baseline_router
 from app.routes.consent import router as consent_router
 from app.routes.vocal_analysis import router as vocal_analysis_router
+from app.routes.mock_interview import router as mock_interview_router
 
 app = FastAPI(
     title="TruePrep API",
@@ -27,6 +28,7 @@ app.include_router(sessions_router)
 app.include_router(baseline_router)
 app.include_router(consent_router)
 app.include_router(vocal_analysis_router)
+app.include_router(mock_interview_router)
 
 
 @app.get("/")

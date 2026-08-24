@@ -8,6 +8,7 @@ import FaceCheck from "./pages/FaceCheck";
 import VoiceCheck from "./pages/VoiceCheck";
 import Calibration from "./pages/Calibration";
 import LiveAssessment from "./pages/LiveAssessment";
+import MockInterview from "./pages/MockInterview";
 
 // "/" doesn't have its own page - it just sends the visitor straight to
 // wherever they actually belong depending on whether they're logged in.
@@ -74,6 +75,14 @@ function App() {
           element={
             <RequireAuth>
               <LiveAssessment />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/mock-interview"
+          element={
+            <RequireAuth>
+              <MockInterview />
             </RequireAuth>
           }
         />

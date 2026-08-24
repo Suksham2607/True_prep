@@ -145,6 +145,19 @@ def compute_filler_word_stats(transcript_text, total_words, duration_seconds):
 # --- Orchestration (this is the piece that actually needs Whisper) --------
 
 
+def transcribe_only(audio_path, whisper_model):
+    """
+    Milestone 8: just the transcript, skipping the acoustic feature
+    extraction analyze_recording() also does - the mock interview only
+    cares about what the candidate said, not how it sounded, so there's
+    no reason to spend CPU on pitch/energy/pause analysis here.
+    """
+    segments, _info = whisper_model.transcribe(audio_path, beam_size=5)
+    segments = list(segments)
+    transcript = " ".join(segment.text.strip() for segment in segments).strip()
+    return {"transcript": transcript}
+
+
 def analyze_recording(audio_path, whisper_model):
     """
     Loads an audio file, runs Whisper for transcription, and combines

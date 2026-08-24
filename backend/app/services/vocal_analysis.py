@@ -3,7 +3,7 @@ import uuid
 
 from fastapi import HTTPException, UploadFile, status
 
-from app.ai.vocal_features import analyze_recording, analyze_recording_windows
+from app.ai.vocal_features import analyze_recording, analyze_recording_windows, transcribe_only
 
 UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "uploads")
 
@@ -95,3 +95,12 @@ async def process_uploaded_audio_for_calibration(upload_file: UploadFile) -> dic
     `analyze_recording_windows` for why that's what a baseline needs.
     """
     return await _process_uploaded_audio_with(upload_file, analyze_recording_windows)
+
+
+async def process_uploaded_audio_for_transcript(upload_file: UploadFile) -> dict:
+    """
+    Milestone 8: transcript-only analysis for a mock interview answer -
+    reuses the same upload/cleanup/error-handling plumbing as the other
+    two, just with the lean `transcribe_only` analysis function.
+    """
+    return await _process_uploaded_audio_with(upload_file, transcribe_only)
