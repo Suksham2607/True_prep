@@ -293,6 +293,12 @@ function FaceCheck() {
               {finalStats.blinkCount} blink{finalStats.blinkCount === 1 ? "" : "s"} counted this
               session. These numbers reset each time you click Start - nothing is stored yet.
             </p>
+            <Link
+              to="/voice-check"
+              className="inline-block mt-4 text-teal-700 font-semibold text-sm hover:underline"
+            >
+              Continue to Voice Check →
+            </Link>
           </div>
         )}
       </div>

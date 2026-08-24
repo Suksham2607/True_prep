@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ConsentScreen from "./pages/ConsentScreen";
 import FaceCheck from "./pages/FaceCheck";
+import VoiceCheck from "./pages/VoiceCheck";
 
 // "/" doesn't have its own page - it just sends the visitor straight to
 // wherever they actually belong depending on whether they're logged in.
@@ -47,6 +48,14 @@ function App() {
           element={
             <RequireAuth>
               <FaceCheck />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/voice-check"
+          element={
+            <RequireAuth>
+              <VoiceCheck />
             </RequireAuth>
           }
         />
