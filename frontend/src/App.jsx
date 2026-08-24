@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import ConsentScreen from "./pages/ConsentScreen";
 import FaceCheck from "./pages/FaceCheck";
 import VoiceCheck from "./pages/VoiceCheck";
+import Calibration from "./pages/Calibration";
 
 // "/" doesn't have its own page - it just sends the visitor straight to
 // wherever they actually belong depending on whether they're logged in.
@@ -56,6 +57,14 @@ function App() {
           element={
             <RequireAuth>
               <VoiceCheck />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/calibration"
+          element={
+            <RequireAuth>
+              <Calibration />
             </RequireAuth>
           }
         />

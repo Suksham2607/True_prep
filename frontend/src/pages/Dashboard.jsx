@@ -67,6 +67,12 @@ function Dashboard() {
     navigate(user?.has_given_consent ? "/face-check" : "/consent");
   }
 
+  // Same consent gate as startAssessment, just routed to the Milestone 6
+  // calibration flow instead of the Face Check demo.
+  function startCalibration() {
+    navigate(user?.has_given_consent ? "/calibration" : "/consent");
+  }
+
   if (loading) {
     return (
       <div className={styles.page}>
@@ -232,6 +238,12 @@ function Dashboard() {
                   <div className={styles.actionIcon}>🧠</div>
                   <h3>New Assessment</h3>
                   <p>Start a real-time anxiety detection session.</p>
+                </button>
+
+                <button className={styles.action} onClick={startCalibration}>
+                  <div className={styles.actionIcon}>🎯</div>
+                  <h3>Calibrate Baseline</h3>
+                  <p>Run a 60-second session to set your personal baseline.</p>
                 </button>
 
                 <button className={styles.action} onClick={comingSoon}>

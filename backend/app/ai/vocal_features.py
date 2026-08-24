@@ -177,3 +177,129 @@ def analyze_recording(audio_path, whisper_model):
         "speaking_speed_wpm": compute_speaking_speed(word_count, speaking_duration),
         **compute_filler_word_stats(transcript, word_count, total_duration),
     }
+
+
+# --- Milestone 6: calibration (mean + spread across a longer recording) ----
+#
+# A single Voice Check gives you one number per feature - useful as a demo,
+# but not enough to calibrate a personal baseline. A baseline needs to know
+# your *typical* value AND how much you naturally vary, so later sessions
+# can be judged against your own normal range instead of a generic one.
+#
+# The approach: take one longer recording (calibration asks for ~60s),
+# slice it into fixed-length windows, run the same per-window analysis on
+# each slice independently, then report the mean and standard deviation
+# across those windows for each feature.
+
+
+def _mean_std(values):
+    """
+    Small local mean/std helper so this module doesn't need scipy.stats
+    for something this simple. Ignores None entries (a window with no
+    detectable pitch, for instance) rather than letting them break the
+    average. Returns (None, None) if nothing usable is left, and (value,
+    0.0) for a single sample - just enough for the code that expects a
+    (mean, std) pair, without pretending a single point has some other
+    meaningful "spread".
+
+    Uses population standard deviation (ddof=0): these windows are the
+    complete calibration recording, not a sample drawn from a larger one,
+    so there's no correction to make.
+    """
+    clean = [v for v in values if v is not None]
+    if not clean:
+        return None, None
+    if len(clean) == 1:
+        return round(float(clean[0]), 2), 0.0
+    arr = np.array(clean, dtype=float)
+    return round(float(np.mean(arr)), 2), round(float(np.std(arr)), 2)
+
+
+def analyze_recording_windows(audio_path, whisper_model, window_seconds=10.0, min_windows=3):
+    """
+    Splits one longer recording into non-overlapping `window_seconds`
+    windows, analyzes each independently (its own transcript, its own
+    pitch/energy/pause/filler numbers), and returns the mean + standard
+    deviation across windows for each feature - the shape the baseline
+    profile (Milestone 2's `/api/baseline/`) actually stores.
+
+    Trailing audio shorter than a full window is dropped rather than
+    padded or force-analyzed, since a partial window would skew that
+    feature's numbers for no good reason. Raises ValueError if fewer than
+    `min_windows` full windows are available - calibration needs several
+    independent samples to describe a *spread*, not just a single clip
+    split arbitrarily in two.
+    """
+    y, sr = librosa.load(audio_path, sr=16000, mono=True)
+    total_duration = len(y) / sr
+    window_samples = int(window_seconds * sr)
+
+    chunks = []
+    start = 0
+    while start + window_samples <= len(y):
+        chunks.append(y[start:start + window_samples])
+        start += window_samples
+
+    if len(chunks) < min_windows:
+        needed_seconds = int(window_seconds * min_windows)
+        raise ValueError(
+            f"That recording is too short for calibration - need at least "
+            f"~{needed_seconds}s of continuous speech, got {total_duration:.0f}s. "
+            "Please record again and keep talking for the full duration."
+        )
+
+    pitch_values, energy_values, speed_values = [], [], []
+    pause_duration_values, filler_rate_values = [], []
+    transcripts = []
+
+    for chunk in chunks:
+        segments, _info = whisper_model.transcribe(chunk, beam_size=5)
+        segments = list(segments)
+        transcript = " ".join(segment.text.strip() for segment in segments).strip()
+        word_count = len(transcript.split()) if transcript else 0
+        if transcript:
+            transcripts.append(transcript)
+
+        pause_metrics = compute_pause_metrics(chunk, sr)
+        speaking_duration = window_seconds - pause_metrics["total_pause_seconds"]
+
+        pitch_values.append(compute_pitch_stability(chunk, sr))
+        energy_values.append(compute_voice_energy(chunk))
+        speed_values.append(compute_speaking_speed(word_count, speaking_duration))
+
+        # Mean pause *length* within this window (not the count, not the
+        # total) - "pause_duration" reads as "how long is a typical pause
+        # for this person", which is the number a later milestone can use
+        # to flag one unusually long pause against.
+        if pause_metrics["pause_count"] > 0:
+            pause_duration_values.append(
+                pause_metrics["total_pause_seconds"] / pause_metrics["pause_count"]
+            )
+        else:
+            pause_duration_values.append(0.0)
+
+        filler_stats = compute_filler_word_stats(transcript, word_count, window_seconds)
+        filler_rate_values.append(filler_stats["filler_word_rate_per_minute"])
+
+    pitch_mean, pitch_std = _mean_std(pitch_values)
+    energy_mean, energy_std = _mean_std(energy_values)
+    speed_mean, speed_std = _mean_std(speed_values)
+    pause_mean, pause_std = _mean_std(pause_duration_values)
+    filler_mean, filler_std = _mean_std(filler_rate_values)
+
+    return {
+        "window_count": len(chunks),
+        "window_seconds": window_seconds,
+        "total_duration_seconds": round(total_duration, 2),
+        "transcript": " ".join(transcripts).strip(),
+        "pitch_stability_mean": pitch_mean,
+        "pitch_stability_std": pitch_std,
+        "voice_energy_mean": energy_mean,
+        "voice_energy_std": energy_std,
+        "speaking_speed_mean": speed_mean,
+        "speaking_speed_std": speed_std,
+        "pause_duration_mean": pause_mean,
+        "pause_duration_std": pause_std,
+        "filler_word_rate_mean": filler_mean,
+        "filler_word_rate_std": filler_std,
+    }

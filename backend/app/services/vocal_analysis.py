@@ -3,7 +3,7 @@ import uuid
 
 from fastapi import HTTPException, UploadFile, status
 
-from app.ai.vocal_features import analyze_recording
+from app.ai.vocal_features import analyze_recording, analyze_recording_windows
 
 UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "uploads")
 
@@ -26,11 +26,14 @@ def get_whisper_model():
     return _whisper_model
 
 
-async def process_uploaded_audio(upload_file: UploadFile) -> dict:
+async def _process_uploaded_audio_with(upload_file: UploadFile, analyze) -> dict:
     """
-    Saves the uploaded recording to a temp file just long enough to run
-    analysis on it, then deletes it - raw audio isn't kept around after
-    the features are extracted, matching the project's rule against
+    Shared upload/cleanup/error-handling plumbing for both the single-shot
+    Voice Check analysis and the Milestone 6 calibration analysis - only
+    the actual analysis function (`analyze`) differs between them. Saves
+    the uploaded recording to a temp file just long enough to run
+    analysis on it, then always deletes it - raw audio isn't kept around
+    after features are extracted, matching the project's rule against
     storing raw media without a clear reason.
     """
     os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -58,7 +61,14 @@ async def process_uploaded_audio(upload_file: UploadFile) -> dict:
             )
 
         try:
-            return analyze_recording(temp_path, model)
+            return analyze(temp_path, model)
+        except HTTPException:
+            raise
+        except ValueError as e:
+            # Raised deliberately (e.g. "recording too short for
+            # calibration") with a message that's already meant for the
+            # user, so pass it through as-is instead of the generic one.
+            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(e))
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
@@ -70,3 +80,18 @@ async def process_uploaded_audio(upload_file: UploadFile) -> dict:
         # failed, or something else went wrong above.
         if os.path.exists(temp_path):
             os.remove(temp_path)
+
+
+async def process_uploaded_audio(upload_file: UploadFile) -> dict:
+    """Single-recording analysis for the Voice Check demo page."""
+    return await _process_uploaded_audio_with(upload_file, analyze_recording)
+
+
+async def process_uploaded_audio_for_calibration(upload_file: UploadFile) -> dict:
+    """
+    Milestone 6: windowed analysis for baseline calibration. Expects a
+    longer recording (the frontend asks for ~60s) and returns mean/std
+    across windows instead of a single snapshot - see
+    `analyze_recording_windows` for why that's what a baseline needs.
+    """
+    return await _process_uploaded_audio_with(upload_file, analyze_recording_windows)
