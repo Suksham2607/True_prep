@@ -60,11 +60,13 @@ function Dashboard() {
     navigate("/login");
   }
 
-  // Consent has to happen before the camera-based Face Check can run, so
-  // route through the consent screen first if this user hasn't done that
-  // yet, otherwise go straight to the real feature.
+  // Consent has to happen before any camera/mic feature can run, so route
+  // through the consent screen first if this user hasn't done that yet.
+  // Milestone 7: this now goes to the real, scored Live Assessment rather
+  // than the Face Check demo - the LiveAssessment page itself checks for
+  // a baseline and points to Calibration if one doesn't exist yet.
   function startAssessment() {
-    navigate(user?.has_given_consent ? "/face-check" : "/consent");
+    navigate(user?.has_given_consent ? "/assessment" : "/consent");
   }
 
   // Same consent gate as startAssessment, just routed to the Milestone 6
@@ -89,7 +91,11 @@ function Dashboard() {
     );
   }
 
-  const mostRecent = sessions.length > 0 ? sessions[sessions.length - 1] : null;
+  // The API already returns sessions newest-first (see list_sessions),
+  // so the most recent one is the first element, not the last. (This
+  // fixes a pre-existing bug that never surfaced before Milestone 7,
+  // since overall_readiness_score was always null either way.)
+  const mostRecent = sessions.length > 0 ? sessions[0] : null;
 
   return (
     <div className={styles.page}>
@@ -205,8 +211,9 @@ function Dashboard() {
                 {mostRecent?.overall_readiness_score ?? "--"}
               </div>
               <div className={styles.statStatus}>
-                {/* Scoring isn't built yet (Milestone 7) - stays a placeholder until then */}
-                Awaiting assessment
+                {mostRecent?.overall_readiness_score != null
+                  ? "From your last assessment"
+                  : "Awaiting assessment"}
               </div>
             </div>
 
@@ -294,9 +301,10 @@ function Dashboard() {
                   </div>
                 </>
               ) : (
+                // Already newest-first from the API - no reverse needed
+                // (a "Recent activity" feed should lead with the newest).
                 sessions
                   .slice()
-                  .reverse()
                   .map((session) => (
                     <div className={styles.record} key={session.id}>
                       <div>

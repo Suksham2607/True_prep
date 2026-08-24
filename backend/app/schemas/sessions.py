@@ -13,6 +13,19 @@ class SessionOut(BaseModel):
     started_at: datetime
     ended_at: Optional[datetime] = None
 
+    # Milestone 7: this session's own measured readings, once completed.
+    # feedback_json isn't included here - the full structured feedback
+    # comes back from POST /{id}/complete directly; a later milestone's
+    # session-history view can add a dedicated endpoint to re-fetch it.
+    eye_contact: Optional[float] = None
+    blink_rate: Optional[float] = None
+    facial_engagement: Optional[float] = None
+    pitch_stability: Optional[float] = None
+    voice_energy: Optional[float] = None
+    speaking_speed: Optional[float] = None
+    pause_duration: Optional[float] = None
+    filler_word_rate: Optional[float] = None
+
     # Lets Pydantic read values straight off the SQLAlchemy model
     # (PracticeSession) instead of requiring a plain dict.
     model_config = ConfigDict(from_attributes=True)
