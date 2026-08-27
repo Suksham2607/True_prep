@@ -407,7 +407,13 @@ function LiveAssessment() {
                 return (
                   <div key={f.feature} className="flex items-start gap-3">
                     <span className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 ${style.dot}`} />
-                    <span className={`text-sm ${style.text}`}>{f.message}</span>
+                    <div>
+                      <div className={`text-sm ${style.text}`}>{f.message}</div>
+                      {/* Milestone 11: a short, practice-oriented follow-up -
+                          only present for mild/notable deviations, see
+                          app/ai/readiness.py's TIP_BANK. */}
+                      {f.tip && <div className="text-xs text-slate-500 mt-0.5">{f.tip}</div>}
+                    </div>
                   </div>
                 );
               })}

@@ -33,6 +33,33 @@ NOTABLE_Z_THRESHOLD = 2.0
 # calling something "even more extreme" stops being informative.
 MAX_Z = 4.0
 
+# Milestone 11: a short, actionable line per (feature, direction) - shown
+# alongside the existing descriptive message, but written for whichever
+# direction actually occurred. Most features have one direction that's
+# generally a good sign (more eye contact, steadier pitch, fewer filler
+# words) and one that benefits from a concrete technique; speaking_speed
+# and pause_duration don't have a single "good" direction, so both sides
+# get a corrective tip. These are practice techniques, not a diagnosis -
+# same honesty stance as build_message below.
+TIP_BANK = {
+    ("eye_contact", "lower"): "Try looking at the camera lens itself rather than the screen - it reads as direct eye contact to whoever's on the other end.",
+    ("eye_contact", "higher"): "More eye contact than your baseline - that's a good sign of engagement.",
+    ("blink_rate", "higher"): "A faster blink rate often creeps in under pressure. A few slow, deliberate blinks before you start answering can help.",
+    ("blink_rate", "lower"): "Calmer blinking than your baseline - a good sign you were relaxed.",
+    ("facial_engagement", "lower"): "Try nodding slightly or letting your eyebrows move naturally - small expressions signal you're engaged with the question.",
+    ("facial_engagement", "higher"): "More expressive than your baseline - that reads as engaged and present.",
+    ("pitch_stability", "lower"): "An unsteady pitch is often just nerves. One slow breath before you start speaking can help steady your voice.",
+    ("pitch_stability", "higher"): "Steadier pitch than your baseline - good vocal control.",
+    ("voice_energy", "lower"): "Try speaking a little louder and adding some vocal variety - it projects more confidence.",
+    ("voice_energy", "higher"): "More vocal energy than your baseline - comes across as confident.",
+    ("speaking_speed", "higher"): "Speaking faster than usual often means rushing under pressure. Try pausing briefly between sentences to reset the pace.",
+    ("speaking_speed", "lower"): "Slower than your usual pace - fine on its own, just watch for long gaps that can feel like hesitation.",
+    ("pause_duration", "higher"): "Longer pauses can mean you're still forming the answer mid-sentence. Practicing a quick structure (like STAR) can cut down on that.",
+    ("pause_duration", "lower"): "Very short pauses can make answers feel rushed - a brief pause before answering is normal and shows you're thinking.",
+    ("filler_word_rate", "higher"): "Try swapping 'um'/'uh' for a silent pause instead - it feels longer to you than it does to the listener.",
+    ("filler_word_rate", "lower"): "Fewer filler words than your baseline - clean, confident delivery.",
+}
+
 
 def compute_z_score(value, mean, std):
     """
@@ -107,6 +134,19 @@ def build_message(feature_key, value, mean, severity, direction):
     )
 
 
+def build_tip(feature_key, severity, direction):
+    """
+    A short, practice-oriented follow-up to build_message() - only
+    surfaced for mild/notable deviations, where there's actually
+    something worth doing something about (or worth acknowledging).
+    Returns None for in_range/unknown, same as when there's nothing
+    noteworthy to say.
+    """
+    if severity not in ("mild", "notable"):
+        return None
+    return TIP_BANK.get((feature_key, direction))
+
+
 def evaluate_session(session_values, baseline):
     """
     `session_values`: dict of the 8 raw feature readings from one live
@@ -146,6 +186,7 @@ def evaluate_session(session_values, baseline):
             "z_score": round(z, 2) if z is not None else None,
             "severity": severity,
             "message": build_message(feature_key, value, mean, severity, direction),
+            "tip": build_tip(feature_key, severity, direction),
         })
 
     overall_score = round(sum(sub_scores) / len(sub_scores), 1) if sub_scores else None

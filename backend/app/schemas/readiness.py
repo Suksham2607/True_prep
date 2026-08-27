@@ -15,6 +15,7 @@ class FeatureFeedback(BaseModel):
     z_score: Optional[float] = None
     severity: str  # "in_range" | "mild" | "notable" | "unknown"
     message: str
+    tip: Optional[str] = None
 
 
 class ReadinessResult(BaseModel):

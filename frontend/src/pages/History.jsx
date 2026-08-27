@@ -84,7 +84,7 @@ function History() {
         </div>
 
         {/* SUMMARY ROW */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
           <StatCard label="COMPLETED SESSIONS" value={trends.completed_count} />
           <StatCard
             label="AVERAGE SCORE"
@@ -101,7 +101,23 @@ function History() {
             }
             small
           />
+          <StatCard
+            label="PRACTICE STREAK"
+            value={trends.current_streak_days > 0 ? `🔥 ${trends.current_streak_days}d` : "--"}
+            valueClass={trends.current_streak_days > 0 ? "text-orange-600" : "text-slate-400"}
+          />
         </div>
+
+        {/* MOST IMPROVED CALLOUT */}
+        {trends.most_improved && (
+          <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-6 flex items-center gap-3">
+            <span className="text-2xl">🌟</span>
+            <div>
+              <div className="text-sm font-semibold text-emerald-800">Most Improved</div>
+              <div className="text-sm text-emerald-700">{trends.most_improved.description}</div>
+            </div>
+          </div>
+        )}
 
         {/* SCORE OVER TIME */}
         <div className="bg-white border border-slate-200 rounded-xl p-6 mb-6">
@@ -337,6 +353,12 @@ function FeatureTrendCard({ feature }) {
           <div className="text-xs text-slate-400 mt-1">
             {feature.in_range_count} in range · {feature.mild_count} mild · {feature.notable_count} notable
           </div>
+          {/* Milestone 11: only present when the most recent session for
+              this feature was mild/notable - see build_tip() in
+              app/ai/readiness.py. */}
+          {feature.most_recent_tip && (
+            <div className="text-xs text-slate-500 mt-2 italic">{feature.most_recent_tip}</div>
+          )}
         </>
       ) : (
         <div className="text-xs text-slate-400 italic">Not enough data yet.</div>

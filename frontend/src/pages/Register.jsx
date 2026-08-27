@@ -83,14 +83,15 @@ function Register() {
               Start your <span>AI journey.</span>
             </h1>
             <p>
-              Create your TruePredict account and access an intelligent
-              platform for real-time anxiety analysis.
+              Create your TruePredict account and start building the
+              confidence and communication skills you need to ace your next
+              interview.
             </p>
 
             <div className={styles.benefits}>
               <div className={styles.benefit}>
                 <div className={styles.check}>✓</div>
-                AI-powered prediction
+                AI-powered confidence coaching
               </div>
               <div className={styles.benefit}>
                 <div className={styles.check}>✓</div>

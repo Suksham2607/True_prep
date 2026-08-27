@@ -61,19 +61,19 @@ function Login() {
           <div className={styles.tag}>AI POWERED SYSTEM</div>
 
           <h1>
-            Real-Time <span>Anxiety Detection</span>
+            Speak with <span>Confidence</span>
           </h1>
 
           <p className={styles.description}>
-            True Predict is an intelligent machine learning system designed
-            to analyze user inputs and provide real-time anxiety-level
-            predictions.
+            True Predict is an AI-powered coach that helps you build
+            communication confidence, ease speaking anxiety, and get ready
+            for real interviews with real-time feedback.
           </p>
 
           <div className={styles.features}>
             <div className={styles.feature}>
               <div className={styles.featureIcon}>🧠</div>
-              <span>AI-Based Anxiety Analysis</span>
+              <span>AI-Powered Confidence Coaching</span>
             </div>
 
             <div className={styles.feature}>

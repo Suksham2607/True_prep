@@ -184,7 +184,7 @@ function Dashboard() {
         <section className={styles.content}>
           <div className={styles.welcome}>
             <h1>Welcome back 👋</h1>
-            <p>Monitor your anxiety analysis and prediction activity.</p>
+            <p>Keep practicing — every session builds your confidence and interview readiness.</p>
           </div>
 
           {/* HERO */}
@@ -213,7 +213,7 @@ function Dashboard() {
             </div>
 
             <div className={styles.statCard}>
-              <div className={styles.statLabel}>LAST ANXIETY SCORE</div>
+              <div className={styles.statLabel}>LAST READINESS SCORE</div>
               <div className={styles.statValue}>
                 {mostRecent?.overall_readiness_score ?? "--"}
               </div>
@@ -251,7 +251,7 @@ function Dashboard() {
                 <button className={styles.action} onClick={startAssessment}>
                   <div className={styles.actionIcon}>🧠</div>
                   <h3>New Assessment</h3>
-                  <p>Start a real-time anxiety detection session.</p>
+                  <p>Practice out loud and get live coaching to build your confidence.</p>
                 </button>
 
                 <button className={styles.action} onClick={startCalibration}>
