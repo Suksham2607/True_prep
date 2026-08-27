@@ -132,7 +132,7 @@ function Dashboard() {
           <span>Predictions</span>
         </button>
 
-        <button className={styles.menuItem} onClick={comingSoon}>
+        <button className={styles.menuItem} onClick={() => navigate("/history")}>
           <span className={styles.menuIcon}>◷</span>
           <span>History</span>
         </button>
@@ -266,7 +266,7 @@ function Dashboard() {
                   <p>Practice a live Q&amp;A with an AI interviewer.</p>
                 </button>
 
-                <button className={styles.action} onClick={comingSoon}>
+                <button className={styles.action} onClick={() => navigate("/history")}>
                   <div className={styles.actionIcon}>📈</div>
                   <h3>View History</h3>
                   <p>Explore previous assessment results.</p>
@@ -284,7 +284,7 @@ function Dashboard() {
             <div className={styles.panel}>
               <div className={styles.panelHeader}>
                 <h2>Recent activity</h2>
-                <button className={styles.viewAll} onClick={comingSoon}>
+                <button className={styles.viewAll} onClick={() => navigate("/history")}>
                   View all
                 </button>
               </div>

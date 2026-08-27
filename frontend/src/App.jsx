@@ -9,6 +9,7 @@ import VoiceCheck from "./pages/VoiceCheck";
 import Calibration from "./pages/Calibration";
 import LiveAssessment from "./pages/LiveAssessment";
 import MockInterview from "./pages/MockInterview";
+import History from "./pages/History";
 
 // "/" doesn't have its own page - it just sends the visitor straight to
 // wherever they actually belong depending on whether they're logged in.
@@ -83,6 +84,14 @@ function App() {
           element={
             <RequireAuth>
               <MockInterview />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/history"
+          element={
+            <RequireAuth>
+              <History />
             </RequireAuth>
           }
         />

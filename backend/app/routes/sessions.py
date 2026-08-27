@@ -7,6 +7,8 @@ from app.database import get_db
 from app.models.users import User
 from app.schemas.sessions import SessionOut, SessionUpdate
 from app.schemas.readiness import ReadinessResult
+from app.schemas.trends import SessionTrends
+from app.ai.trends import compute_trends
 from app.services import sessions as session_service
 from app.services import readiness as readiness_service
 from app.services.auth import get_current_user
@@ -33,6 +35,24 @@ def list_my_sessions(
 ):
     """Lists every session that belongs to the logged-in user."""
     return session_service.list_sessions(db, current_user.id)
+
+
+@router.get("/trends", response_model=SessionTrends)
+def get_session_trends(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Milestone 9: the History page's one-call data source - readiness
+    score over time, a trend direction, and a per-feature breakdown of
+    how often each one has come back in_range/mild/notable. Registered
+    before `/{session_id}` so "trends" is never mistaken for a session
+    id (FastAPI's int-typed path converter already prevents that, since
+    "trends" isn't all-digits, but the ordering is kept explicit rather
+    than relying on that alone).
+    """
+    sessions = session_service.list_sessions(db, current_user.id)
+    return compute_trends(sessions)
 
 
 @router.get("/{session_id}", response_model=SessionOut)
