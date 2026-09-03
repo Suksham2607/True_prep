@@ -42,11 +42,11 @@ function Login() {
   }
 
   function forgotPassword() {
-    if (email.trim() === "") {
-      alert("Please enter your email address first.");
-    } else {
-      alert("Password reset link will be sent to: " + email);
-    }
+    // There's no password-reset flow (or email sending) built yet - this
+    // used to falsely claim a reset email had been sent, which is
+    // actively misleading. Same "hasn't been built yet" honesty as
+    // Dashboard's comingSoon() placeholders, until a real flow exists.
+    alert("Password reset isn't available yet - this feature hasn't been built yet.");
   }
 
   return (

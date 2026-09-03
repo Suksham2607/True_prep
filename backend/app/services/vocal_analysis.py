@@ -7,6 +7,13 @@ from app.ai.vocal_features import analyze_recording, analyze_recording_windows, 
 
 UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "uploads")
 
+# A voice-check/calibration/interview-answer recording is at most a couple
+# of minutes of compressed audio - a few MB, generously. This cap exists
+# purely as a safety net against an oversized or malformed upload reading
+# an unbounded number of bytes into memory on a small server, not because
+# any real recording should get anywhere close to it.
+MAX_UPLOAD_BYTES = 25 * 1024 * 1024  # 25 MB
+
 # Loaded once and reused across requests - reloading the model on every
 # API call would make every practice session take much longer than it
 # needs to. `None` until the first request actually needs it.
@@ -41,9 +48,14 @@ async def _process_uploaded_audio_with(upload_file: UploadFile, analyze) -> dict
     temp_path = os.path.join(UPLOAD_DIR, temp_filename)
 
     try:
-        contents = await upload_file.read()
+        contents = await upload_file.read(MAX_UPLOAD_BYTES + 1)
         if not contents:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Uploaded file is empty")
+        if len(contents) > MAX_UPLOAD_BYTES:
+            raise HTTPException(
+                status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+                detail=f"That recording is too large (max {MAX_UPLOAD_BYTES // (1024 * 1024)}MB).",
+            )
 
         with open(temp_path, "wb") as f:
             f.write(contents)
