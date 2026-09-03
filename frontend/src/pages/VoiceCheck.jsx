@@ -124,27 +124,27 @@ function VoiceCheck() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-5">
+    <div className="min-h-screen bg-soft-bg p-5">
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold text-slate-800">Voice Check</h1>
-          <Link to="/dashboard" className="text-sm text-slate-500 hover:text-slate-700">
+          <h1 className="text-2xl font-bold text-soft-text">Voice Check</h1>
+          <Link to="/dashboard" className="text-sm text-soft-textMuted hover:text-soft-text">
             Back to dashboard
           </Link>
         </div>
 
-        <p className="text-slate-600 mb-6 leading-relaxed">
+        <p className="text-soft-textMuted mb-6 leading-relaxed">
           Record a short clip of yourself speaking - a sentence or two is enough. It's sent
           once to your own backend for analysis (pitch, pace, pauses, filler words), then
           deleted; nothing is stored. This is a live technical demo, same as Face Check -
           nothing here is saved to your account yet.
         </p>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-8 text-center mb-6">
+        <div className="bg-soft-surface rounded-soft-lg p-8 text-center mb-6 shadow-soft-flat">
           {recordingState === "idle" && (
             <button
               onClick={startRecording}
-              className="bg-teal-700 text-white font-semibold px-6 py-3 rounded-lg hover:bg-teal-800 transition"
+              className="bg-teal-700 text-white font-semibold px-6 py-3 rounded-soft-sm shadow-soft-flat-sm hover:shadow-soft-flat-hover transition"
             >
               ● Start Recording
             </button>
@@ -155,7 +155,7 @@ function VoiceCheck() {
               <div className="text-3xl font-bold text-red-500 mb-4">● {seconds}s</div>
               <button
                 onClick={stopRecording}
-                className="bg-slate-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-slate-900 transition"
+                className="bg-slate-800 text-white font-semibold px-6 py-3 rounded-soft-sm shadow-soft-flat-sm hover:shadow-soft-flat-hover transition"
               >
                 Stop Recording
               </button>
@@ -163,13 +163,13 @@ function VoiceCheck() {
           )}
 
           {recordingState === "analyzing" && (
-            <div className="text-slate-500">Analyzing your recording (this can take a little while the first time, while the speech model downloads)...</div>
+            <div className="text-soft-textMuted">Analyzing your recording (this can take a little while the first time, while the speech model downloads)...</div>
           )}
 
           {(recordingState === "done" || recordingState === "error") && (
             <button
               onClick={reset}
-              className="bg-teal-700 text-white font-semibold px-6 py-3 rounded-lg hover:bg-teal-800 transition"
+              className="bg-teal-700 text-white font-semibold px-6 py-3 rounded-soft-sm shadow-soft-flat-sm hover:shadow-soft-flat-hover transition"
             >
               Record Again
             </button>
@@ -177,14 +177,14 @@ function VoiceCheck() {
         </div>
 
         {errorMessage && (
-          <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg p-4 mb-6">
+          <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-soft-sm p-4 mb-6">
             {errorMessage}
           </div>
         )}
 
         {results && (
-          <div className="bg-white border border-slate-200 rounded-xl p-6">
-            <h2 className="font-bold text-slate-800 mb-4">Results</h2>
+          <div className="bg-soft-surface rounded-soft-lg p-6 shadow-soft-flat">
+            <h2 className="font-bold text-soft-text mb-4">Results</h2>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
               <StatCard label="PITCH STABILITY" value={formatNumber(results.pitch_stability)} />
@@ -195,8 +195,8 @@ function VoiceCheck() {
               <StatCard label="FILLER WORDS" value={formatNumber(results.filler_word_count)} />
             </div>
 
-            <div className="text-sm text-slate-500">
-              <span className="font-semibold text-slate-700">Transcript: </span>
+            <div className="text-sm text-soft-textMuted">
+              <span className="font-semibold text-soft-text">Transcript: </span>
               {results.transcript || <em>(no speech detected)</em>}
             </div>
           </div>
@@ -208,17 +208,17 @@ function VoiceCheck() {
 
 function StatCard({ label, value }) {
   return (
-    <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 text-center">
-      <div className="text-[11px] text-slate-400 font-semibold mb-1">{label}</div>
-      <div className="text-xl font-bold text-slate-800">{value}</div>
+    <div className="bg-soft-surface rounded-soft p-4 text-center shadow-soft-inset-sm">
+      <div className="text-[11px] text-soft-textMuted font-semibold mb-1">{label}</div>
+      <div className="text-xl font-bold text-soft-text">{value}</div>
     </div>
   );
 }
 
 function CenteredMessage({ children, error }) {
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-5">
-      <div className={`max-w-md text-center ${error ? "text-red-600" : "text-slate-600"}`}>{children}</div>
+    <div className="min-h-screen bg-soft-bg flex items-center justify-center p-5">
+      <div className={`max-w-md text-center ${error ? "text-red-600" : "text-soft-textMuted"}`}>{children}</div>
     </div>
   );
 }

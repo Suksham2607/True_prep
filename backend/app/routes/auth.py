@@ -3,12 +3,14 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.users import User
-from app.schemas.users import UserCreate, UserLogin, UserOut, Token
+from app.schemas.users import UserCreate, UserLogin, UserOut, Token, UserUpdate, ChangePasswordIn
 from app.services.auth import (
     hash_password,
     verify_password,
     create_access_token,
-    get_current_user
+    get_current_user,
+    update_user_name,
+    change_user_password,
 )
 
 router = APIRouter(
@@ -79,3 +81,24 @@ def get_me(current_user: User = Depends(get_current_user)):
     left to do but hand back the user it found.
     """
     return current_user
+
+
+@router.patch("/me", response_model=UserOut)
+def update_me(
+    payload: UserUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Profile page: updates the logged-in user's display name."""
+    return update_user_name(db, current_user, payload.name)
+
+
+@router.post("/change-password", status_code=status.HTTP_204_NO_CONTENT)
+def change_password(
+    payload: ChangePasswordIn,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Settings page: changes the logged-in user's password, after
+    confirming they can supply the current one."""
+    change_user_password(db, current_user, payload.current_password, payload.new_password)

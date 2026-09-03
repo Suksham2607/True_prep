@@ -70,3 +70,34 @@ def get_current_user(
         raise credentials_exception
 
     return user
+
+
+def update_user_name(db: Session, user: User, name: str) -> User:
+    """Profile page: the only field a user can edit about themselves.
+    UserUpdate's min_length=1 already rejects an empty string, but not a
+    whitespace-only one (" " passes length validation) - checked again
+    here after stripping so a blank name can't slip through either way."""
+    cleaned = name.strip()
+    if not cleaned:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="Name can't be blank")
+    user.name = cleaned
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+def change_user_password(db: Session, user: User, current_password: str, new_password: str) -> None:
+    """
+    Settings page. Requires the current password to be re-entered (not
+    just an active session) before a new one is set - the standard
+    "prove you're still you" guard for a sensitive account change, same
+    reasoning as re-prompting for a password before changing email/2FA
+    on most real services.
+    """
+    if not verify_password(current_password, user.password_hash):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Current password is incorrect",
+        )
+    user.password_hash = hash_password(new_password)
+    db.commit()

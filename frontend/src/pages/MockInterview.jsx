@@ -161,24 +161,24 @@ function MockInterview() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-5">
+    <div className="min-h-screen bg-soft-bg p-5">
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold text-slate-800">Mock Interview</h1>
-          <Link to="/dashboard" className="text-sm text-slate-500 hover:text-slate-700">
+          <h1 className="text-2xl font-bold text-soft-text">Mock Interview</h1>
+          <Link to="/dashboard" className="text-sm text-soft-textMuted hover:text-soft-text">
             Back to dashboard
           </Link>
         </div>
 
-        <p className="text-slate-600 mb-6 leading-relaxed">
+        <p className="text-soft-textMuted mb-6 leading-relaxed">
           Practice a real back-and-forth interview with an AI interviewer. Answer out loud like
           you would in the real thing - each answer is transcribed and the interviewer follows up
           based on what you said.
         </p>
 
         {phase === "setup" && (
-          <div className="bg-white border border-slate-200 rounded-xl p-8">
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
+          <div className="bg-soft-surface rounded-soft-lg p-8 shadow-soft-flat">
+            <label className="block text-sm font-semibold text-soft-text mb-2">
               What role are you practicing for? (optional)
             </label>
             <input
@@ -186,11 +186,11 @@ function MockInterview() {
               value={role}
               onChange={(e) => setRole(e.target.value)}
               placeholder="e.g. Backend Developer, Product Manager..."
-              className="w-full border border-slate-300 rounded-lg px-4 py-2 mb-6 focus:outline-none focus:ring-2 focus:ring-teal-600"
+              className="w-full border-none rounded-soft-sm px-4 py-2 mb-6 bg-soft-surface shadow-soft-inset-sm focus:outline-none focus:ring-2 focus:ring-teal-400"
             />
             <button
               onClick={startInterview}
-              className="bg-teal-700 text-white font-semibold px-6 py-3 rounded-lg hover:bg-teal-800 transition"
+              className="bg-teal-700 text-white font-semibold px-6 py-3 rounded-soft-sm shadow-soft-flat-sm hover:shadow-soft-flat-hover transition"
             >
               Start Interview
             </button>
@@ -198,14 +198,14 @@ function MockInterview() {
         )}
 
         {phase === "starting" && (
-          <div className="bg-white border border-slate-200 rounded-xl p-8 text-center text-slate-500">
+          <div className="bg-soft-surface rounded-soft-lg p-8 text-center text-soft-textMuted shadow-soft-flat">
             Starting your interview...
           </div>
         )}
 
         {["chatting", "recording", "submitting", "ending", "ended"].includes(phase) && (
           <>
-            <div className="bg-white border border-slate-200 rounded-xl p-6 mb-6 max-h-[28rem] overflow-y-auto">
+            <div className="bg-soft-surface rounded-soft-lg p-6 mb-6 max-h-[28rem] overflow-y-auto shadow-soft-inset">
               {transcript.map((turn, i) => (
                 <TranscriptBubble key={i} turn={turn} />
               ))}
@@ -216,18 +216,18 @@ function MockInterview() {
             </div>
 
             {phase !== "ended" && (
-              <div className="bg-white border border-slate-200 rounded-xl p-6 text-center mb-6">
+              <div className="bg-soft-surface rounded-soft-lg p-6 text-center mb-6 shadow-soft-flat">
                 {phase === "chatting" && (
                   <div className="flex items-center justify-center gap-3 flex-wrap">
                     <button
                       onClick={startRecording}
-                      className="bg-teal-700 text-white font-semibold px-6 py-3 rounded-lg hover:bg-teal-800 transition"
+                      className="bg-teal-700 text-white font-semibold px-6 py-3 rounded-soft-sm shadow-soft-flat-sm hover:shadow-soft-flat-hover transition"
                     >
                       ● Record Answer
                     </button>
                     <button
                       onClick={endInterview}
-                      className="bg-slate-100 text-slate-700 font-semibold px-6 py-3 rounded-lg hover:bg-slate-200 transition"
+                      className="bg-soft-surface text-soft-text font-semibold px-6 py-3 rounded-soft-sm shadow-soft-flat-sm hover:shadow-soft-flat-hover transition"
                     >
                       End Interview
                     </button>
@@ -239,7 +239,7 @@ function MockInterview() {
                     <div className="text-3xl font-bold text-red-500 mb-4">● {seconds}s</div>
                     <button
                       onClick={stopRecording}
-                      className="bg-slate-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-slate-900 transition"
+                      className="bg-slate-800 text-white font-semibold px-6 py-3 rounded-soft-sm shadow-soft-flat-sm hover:shadow-soft-flat-hover transition"
                     >
                       Stop &amp; Submit Answer
                     </button>
@@ -247,20 +247,20 @@ function MockInterview() {
                 )}
 
                 {phase === "submitting" && (
-                  <div className="text-slate-500">Transcribing your answer and getting the next question...</div>
+                  <div className="text-soft-textMuted">Transcribing your answer and getting the next question...</div>
                 )}
 
-                {phase === "ending" && <div className="text-slate-500">Wrapping up the interview...</div>}
+                {phase === "ending" && <div className="text-soft-textMuted">Wrapping up the interview...</div>}
               </div>
             )}
 
             {phase === "ended" && (
-              <div className="bg-white border border-slate-200 rounded-xl p-6 mb-6">
-                <h2 className="font-bold text-slate-800 mb-2">Interview Complete</h2>
-                <p className="text-slate-700 leading-relaxed mb-6">{closingMessage}</p>
+              <div className="bg-soft-surface rounded-soft-lg p-6 mb-6 shadow-soft-flat">
+                <h2 className="font-bold text-soft-text mb-2">Interview Complete</h2>
+                <p className="text-soft-text leading-relaxed mb-6">{closingMessage}</p>
                 <button
                   onClick={startOver}
-                  className="bg-teal-700 text-white font-semibold px-6 py-3 rounded-lg hover:bg-teal-800 transition"
+                  className="bg-teal-700 text-white font-semibold px-6 py-3 rounded-soft-sm shadow-soft-flat-sm hover:shadow-soft-flat-hover transition"
                 >
                   Start Another Interview
                 </button>
@@ -270,7 +270,7 @@ function MockInterview() {
         )}
 
         {errorMessage && (
-          <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg p-4 mb-6">
+          <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-soft-sm p-4 mb-6">
             {errorMessage}
           </div>
         )}
@@ -278,7 +278,7 @@ function MockInterview() {
         {phase === "error" && (
           <button
             onClick={startOver}
-            className="bg-teal-700 text-white font-semibold px-6 py-3 rounded-lg hover:bg-teal-800 transition"
+            className="bg-teal-700 text-white font-semibold px-6 py-3 rounded-soft-sm shadow-soft-flat-sm hover:shadow-soft-flat-hover transition"
           >
             Try Again
           </button>
@@ -293,8 +293,8 @@ function TranscriptBubble({ turn, pending }) {
   return (
     <div className={`flex mb-4 ${isAssistant ? "justify-start" : "justify-end"}`}>
       <div
-        className={`max-w-[80%] rounded-lg px-4 py-3 text-sm leading-relaxed ${
-          isAssistant ? "bg-slate-100 text-slate-800" : "bg-teal-700 text-white"
+        className={`max-w-[80%] rounded-soft-sm px-4 py-3 text-sm leading-relaxed ${
+          isAssistant ? "bg-soft-bg text-soft-text shadow-soft-inset-sm" : "bg-teal-700 text-white shadow-soft-flat-sm"
         } ${pending ? "opacity-60 italic" : ""}`}
       >
         <div className="text-[11px] font-semibold mb-1 opacity-70">
@@ -308,8 +308,8 @@ function TranscriptBubble({ turn, pending }) {
 
 function CenteredMessage({ children, error }) {
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-5">
-      <div className={`max-w-md text-center ${error ? "text-red-600" : "text-slate-600"}`}>{children}</div>
+    <div className="min-h-screen bg-soft-bg flex items-center justify-center p-5">
+      <div className={`max-w-md text-center ${error ? "text-red-600" : "text-soft-textMuted"}`}>{children}</div>
     </div>
   );
 }

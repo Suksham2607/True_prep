@@ -33,3 +33,12 @@ def get_consent_status(
     """Lets the frontend check whether this user already consented,
     so it knows whether to show the consent screen again."""
     return current_user
+
+
+@router.post("/revoke", response_model=ConsentOut)
+def withdraw_consent(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Settings page: lets the user withdraw camera/microphone consent."""
+    return consent_service.revoke_consent(db, current_user)

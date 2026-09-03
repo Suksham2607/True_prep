@@ -322,16 +322,16 @@ function LiveAssessment() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-5">
+    <div className="min-h-screen bg-soft-bg p-5">
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold text-slate-800">Live Assessment</h1>
-          <button onClick={() => navigate("/dashboard")} className="text-sm text-slate-500 hover:text-slate-700">
+          <h1 className="text-2xl font-bold text-soft-text">Live Assessment</h1>
+          <button onClick={() => navigate("/dashboard")} className="text-sm text-soft-textMuted hover:text-soft-text">
             Back to dashboard
           </button>
         </div>
 
-        <p className="text-slate-600 mb-4 leading-relaxed">
+        <p className="text-soft-textMuted mb-4 leading-relaxed">
           A {SESSION_SECONDS}-second combined face + voice session, compared against your
           calibrated baseline. The readiness score reflects how close this session was to your
           own normal, not an absolute judgment - a rule-based comparison, not a trained model.
@@ -339,7 +339,9 @@ function LiveAssessment() {
 
         {(phase === "idle" || phase === "running") && (
           <>
-            <div className="relative bg-black rounded-lg overflow-hidden aspect-video mb-4">
+            {/* Live video feed + landmark overlay - left plain/functional,
+                only the corner radius was touched. */}
+            <div className="relative bg-black rounded-soft overflow-hidden aspect-video mb-4">
               <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover" />
               <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
 
@@ -358,34 +360,34 @@ function LiveAssessment() {
               <button
                 onClick={startAssessment}
                 disabled={modelStatus !== "ready"}
-                className="bg-teal-700 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-teal-800 transition disabled:opacity-50"
+                className="bg-teal-700 text-white font-semibold px-5 py-2.5 rounded-soft-sm shadow-soft-flat-sm hover:shadow-soft-flat-hover transition disabled:opacity-50"
               >
                 Start Assessment
               </button>
             ) : (
-              <div className="bg-white border border-slate-200 rounded-xl p-6 text-center">
+              <div className="bg-soft-surface rounded-soft-lg p-6 text-center shadow-soft-flat">
                 <div className="text-3xl font-bold text-teal-700">{secondsLeft}s</div>
-                <div className="text-xs text-slate-400 mt-1">remaining - keep talking naturally</div>
+                <div className="text-xs text-soft-textMuted mt-1">remaining - keep talking naturally</div>
               </div>
             )}
           </>
         )}
 
         {phase === "processing" && (
-          <div className="bg-white border border-slate-200 rounded-xl p-8 text-center text-slate-500">
+          <div className="bg-soft-surface rounded-soft-lg p-8 text-center text-soft-textMuted shadow-soft-flat">
             Scoring your session (this can take a little while the first time, while the speech
             model downloads)...
           </div>
         )}
 
         {phase === "error" && (
-          <div className="bg-white border border-slate-200 rounded-xl p-6">
-            <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg p-4 mb-4">
+          <div className="bg-soft-surface rounded-soft-lg p-6 shadow-soft-flat">
+            <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-soft-sm p-4 mb-4">
               {errorMessage}
             </div>
             <button
               onClick={tryAgain}
-              className="bg-teal-700 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-teal-800 transition"
+              className="bg-teal-700 text-white font-semibold px-5 py-2.5 rounded-soft-sm shadow-soft-flat-sm hover:shadow-soft-flat-hover transition"
             >
               Try Again
             </button>
@@ -393,9 +395,9 @@ function LiveAssessment() {
         )}
 
         {phase === "done" && result && (
-          <div className="bg-white border border-slate-200 rounded-xl p-6">
+          <div className="bg-soft-surface rounded-soft-lg p-6 shadow-soft-flat">
             <div className="text-center mb-6">
-              <div className="text-xs text-slate-400 font-semibold mb-1">READINESS SCORE</div>
+              <div className="text-xs text-soft-textMuted font-semibold mb-1">READINESS SCORE</div>
               <div className={`text-5xl font-bold ${scoreColor(result.overall_readiness_score)}`}>
                 {result.overall_readiness_score ?? "--"}
               </div>
@@ -412,7 +414,7 @@ function LiveAssessment() {
                       {/* Milestone 11: a short, practice-oriented follow-up -
                           only present for mild/notable deviations, see
                           app/ai/readiness.py's TIP_BANK. */}
-                      {f.tip && <div className="text-xs text-slate-500 mt-0.5">{f.tip}</div>}
+                      {f.tip && <div className="text-xs text-soft-textMuted mt-0.5">{f.tip}</div>}
                     </div>
                   </div>
                 );
@@ -420,8 +422,8 @@ function LiveAssessment() {
             </div>
 
             {result.transcript && (
-              <div className="text-sm text-slate-500 border-t border-slate-100 pt-4">
-                <span className="font-semibold text-slate-700">Transcript: </span>
+              <div className="text-sm text-soft-textMuted border-t border-slate-200/60 pt-4">
+                <span className="font-semibold text-soft-text">Transcript: </span>
                 {result.transcript}
               </div>
             )}
@@ -450,8 +452,8 @@ function Overlay({ children, error }) {
 
 function CenteredMessage({ children, error }) {
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-5">
-      <div className={`max-w-md text-center ${error ? "text-red-600" : "text-slate-600"}`}>{children}</div>
+    <div className="min-h-screen bg-soft-bg flex items-center justify-center p-5">
+      <div className={`max-w-md text-center ${error ? "text-red-600" : "text-soft-textMuted"}`}>{children}</div>
     </div>
   );
 }

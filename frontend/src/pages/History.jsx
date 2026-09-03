@@ -74,11 +74,11 @@ function History() {
   const trendInfo = TREND_DISPLAY[trends.score_trend] || TREND_DISPLAY.insufficient_data;
 
   return (
-    <div className="min-h-screen bg-slate-50 p-5">
+    <div className="min-h-screen bg-soft-bg p-5">
       <div className="max-w-5xl mx-auto">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-slate-800">History &amp; Trends</h1>
-          <Link to="/dashboard" className="text-sm text-slate-500 hover:text-slate-700">
+          <h1 className="text-2xl font-bold text-soft-text">History &amp; Trends</h1>
+          <Link to="/dashboard" className="text-sm text-soft-textMuted hover:text-soft-text">
             Back to dashboard
           </Link>
         </div>
@@ -120,14 +120,14 @@ function History() {
         )}
 
         {/* SCORE OVER TIME */}
-        <div className="bg-white border border-slate-200 rounded-xl p-6 mb-6">
-          <h2 className="font-bold text-slate-800 mb-4">Readiness Score Over Time</h2>
+        <div className="bg-soft-surface rounded-soft-lg p-6 mb-6 shadow-soft-flat">
+          <h2 className="font-bold text-soft-text mb-4">Readiness Score Over Time</h2>
           <ScoreChart points={trends.score_history} />
         </div>
 
         {/* PER-FEATURE BREAKDOWN */}
-        <div className="bg-white border border-slate-200 rounded-xl p-6 mb-6">
-          <h2 className="font-bold text-slate-800 mb-4">Feature Breakdown</h2>
+        <div className="bg-soft-surface rounded-soft-lg p-6 mb-6 shadow-soft-flat">
+          <h2 className="font-bold text-soft-text mb-4">Feature Breakdown</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {trends.feature_trends.map((feature) => (
               <FeatureTrendCard key={feature.feature} feature={feature} />
@@ -136,10 +136,10 @@ function History() {
         </div>
 
         {/* SESSION LIST */}
-        <div className="bg-white border border-slate-200 rounded-xl p-6">
-          <h2 className="font-bold text-slate-800 mb-4">All Sessions</h2>
+        <div className="bg-soft-surface rounded-soft-lg p-6 shadow-soft-flat">
+          <h2 className="font-bold text-soft-text mb-4">All Sessions</h2>
           {sessions.length === 0 ? (
-            <p className="text-slate-500 text-sm">
+            <p className="text-soft-textMuted text-sm">
               No sessions yet.{" "}
               <Link to="/dashboard" className="text-teal-700 underline">
                 Start your first assessment
@@ -147,12 +147,12 @@ function History() {
               .
             </p>
           ) : (
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-slate-200/60">
               {sessions.map((s) => (
                 <div key={s.id} className="flex items-center justify-between py-3">
                   <div>
-                    <div className="text-sm font-medium text-slate-700">Session #{s.id}</div>
-                    <div className="text-xs text-slate-400">{formatDateTime(s.started_at)}</div>
+                    <div className="text-sm font-medium text-soft-text">Session #{s.id}</div>
+                    <div className="text-xs text-soft-textMuted">{formatDateTime(s.started_at)}</div>
                   </div>
                   <div className="flex items-center gap-4">
                     <StatusBadge status={s.status} />
@@ -170,10 +170,10 @@ function History() {
   );
 }
 
-function StatCard({ label, value, valueClass = "text-slate-800", small }) {
+function StatCard({ label, value, valueClass = "text-soft-text", small }) {
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-4 text-center">
-      <div className="text-[11px] text-slate-400 font-semibold mb-1">{label}</div>
+    <div className="bg-soft-surface rounded-soft p-4 text-center shadow-soft-flat-sm">
+      <div className="text-[11px] text-soft-textMuted font-semibold mb-1">{label}</div>
       <div className={`${small ? "text-base" : "text-2xl"} font-bold ${valueClass}`}>{value}</div>
     </div>
   );
@@ -338,9 +338,9 @@ function FeatureTrendCard({ feature }) {
   const total = feature.in_range_count + feature.mild_count + feature.notable_count;
 
   return (
-    <div className="border border-slate-200 rounded-lg p-4">
+    <div className="bg-soft-surface rounded-soft p-4 shadow-soft-inset-sm">
       <div className="flex items-center justify-between mb-2">
-        <div className="font-semibold text-slate-700 text-sm">{feature.label}</div>
+        <div className="font-semibold text-soft-text text-sm">{feature.label}</div>
         <div className={`flex items-center gap-1.5 text-xs font-semibold ${style.text}`}>
           <span className={`w-2 h-2 rounded-full ${style.dot}`} />
           {style.label}
@@ -350,31 +350,31 @@ function FeatureTrendCard({ feature }) {
       {total > 0 ? (
         <>
           <Sparkline points={feature.points} color="#0f766e" />
-          <div className="text-xs text-slate-400 mt-1">
+          <div className="text-xs text-soft-textMuted mt-1">
             {feature.in_range_count} in range · {feature.mild_count} mild · {feature.notable_count} notable
           </div>
           {/* Milestone 11: only present when the most recent session for
               this feature was mild/notable - see build_tip() in
               app/ai/readiness.py. */}
           {feature.most_recent_tip && (
-            <div className="text-xs text-slate-500 mt-2 italic">{feature.most_recent_tip}</div>
+            <div className="text-xs text-soft-textMuted mt-2 italic">{feature.most_recent_tip}</div>
           )}
         </>
       ) : (
-        <div className="text-xs text-slate-400 italic">Not enough data yet.</div>
+        <div className="text-xs text-soft-textMuted italic">Not enough data yet.</div>
       )}
     </div>
   );
 }
 
 function EmptyChartState({ children }) {
-  return <div className="text-sm text-slate-500 text-center py-12">{children}</div>;
+  return <div className="text-sm text-soft-textMuted text-center py-12">{children}</div>;
 }
 
 function CenteredMessage({ children, error }) {
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-5">
-      <div className={`max-w-md text-center ${error ? "text-red-600" : "text-slate-600"}`}>{children}</div>
+    <div className="min-h-screen bg-soft-bg flex items-center justify-center p-5">
+      <div className={`max-w-md text-center ${error ? "text-red-600" : "text-soft-textMuted"}`}>{children}</div>
     </div>
   );
 }

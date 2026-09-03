@@ -311,16 +311,16 @@ function Calibration() {
   const secondsLeftInSegment = secondsElapsed === 0 ? SEGMENT_SECONDS : SEGMENT_SECONDS - secondsIntoSegment;
 
   return (
-    <div className="min-h-screen bg-slate-50 p-5">
+    <div className="min-h-screen bg-soft-bg p-5">
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold text-slate-800">Calibrate Your Baseline</h1>
-          <button onClick={() => navigate("/dashboard")} className="text-sm text-slate-500 hover:text-slate-700">
+          <h1 className="text-2xl font-bold text-soft-text">Calibrate Your Baseline</h1>
+          <button onClick={() => navigate("/dashboard")} className="text-sm text-soft-textMuted hover:text-soft-text">
             Back to dashboard
           </button>
         </div>
 
-        <p className="text-slate-600 mb-4 leading-relaxed">
+        <p className="text-soft-textMuted mb-4 leading-relaxed">
           This runs a single {SEGMENT_COUNT * SEGMENT_SECONDS}-second session combining Face
           Check and Voice Check, split into {SEGMENT_COUNT} ten-second segments. Talk naturally
           about anything - what matters is your normal range, not any particular answer. The
@@ -330,7 +330,10 @@ function Calibration() {
 
         {(phase === "idle" || phase === "running") && (
           <>
-            <div className="relative bg-black rounded-lg overflow-hidden aspect-video mb-4">
+            {/* Camera preview + canvas overlay are a real video feed and its
+                live landmark drawing - left as plain black/functional, only
+                the corner radius was touched for visual consistency. */}
+            <div className="relative bg-black rounded-soft overflow-hidden aspect-video mb-4">
               <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover" />
               <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
 
@@ -349,37 +352,37 @@ function Calibration() {
               <button
                 onClick={startCalibration}
                 disabled={modelStatus !== "ready"}
-                className="bg-teal-700 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-teal-800 transition disabled:opacity-50"
+                className="bg-teal-700 text-white font-semibold px-5 py-2.5 rounded-soft-sm shadow-soft-flat-sm hover:shadow-soft-flat-hover transition disabled:opacity-50"
               >
                 Start Calibration
               </button>
             ) : (
-              <div className="bg-white border border-slate-200 rounded-xl p-6 text-center">
-                <div className="text-sm text-slate-500 mb-1">
+              <div className="bg-soft-surface rounded-soft-lg p-6 text-center shadow-soft-flat">
+                <div className="text-sm text-soft-textMuted mb-1">
                   Segment {segmentNumber} of {SEGMENT_COUNT}
                 </div>
                 <div className="text-3xl font-bold text-teal-700">{secondsLeftInSegment}s</div>
-                <div className="text-xs text-slate-400 mt-1">left in this segment - keep talking</div>
+                <div className="text-xs text-soft-textMuted mt-1">left in this segment - keep talking</div>
               </div>
             )}
           </>
         )}
 
         {phase === "processing" && (
-          <div className="bg-white border border-slate-200 rounded-xl p-8 text-center text-slate-500">
+          <div className="bg-soft-surface rounded-soft-lg p-8 text-center text-soft-textMuted shadow-soft-flat">
             Analyzing your calibration recording (this can take a little while the first time,
             while the speech model downloads)...
           </div>
         )}
 
         {phase === "error" && (
-          <div className="bg-white border border-slate-200 rounded-xl p-6">
-            <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg p-4 mb-4">
+          <div className="bg-soft-surface rounded-soft-lg p-6 shadow-soft-flat">
+            <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-soft-sm p-4 mb-4">
               {errorMessage}
             </div>
             <button
               onClick={tryAgain}
-              className="bg-teal-700 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-teal-800 transition"
+              className="bg-teal-700 text-white font-semibold px-5 py-2.5 rounded-soft-sm shadow-soft-flat-sm hover:shadow-soft-flat-hover transition"
             >
               Try Again
             </button>
@@ -387,9 +390,9 @@ function Calibration() {
         )}
 
         {phase === "done" && baseline && (
-          <div className="bg-white border border-slate-200 rounded-xl p-6">
-            <h2 className="font-bold text-slate-800 mb-1">Baseline saved</h2>
-            <p className="text-xs text-slate-400 mb-4">
+          <div className="bg-soft-surface rounded-soft-lg p-6 shadow-soft-flat">
+            <h2 className="font-bold text-soft-text mb-1">Baseline saved</h2>
+            <p className="text-xs text-soft-textMuted mb-4">
               Calibrated {new Date(baseline.calibrated_at).toLocaleString()} - each value is your
               average across the session, ± how much it naturally varied.
             </p>
@@ -415,9 +418,9 @@ function Calibration() {
 
 function StatCard({ label, value }) {
   return (
-    <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 text-center">
-      <div className="text-[11px] text-slate-400 font-semibold mb-1">{label}</div>
-      <div className="text-base font-bold text-slate-800">{value}</div>
+    <div className="bg-soft-surface rounded-soft p-4 text-center shadow-soft-inset-sm">
+      <div className="text-[11px] text-soft-textMuted font-semibold mb-1">{label}</div>
+      <div className="text-base font-bold text-soft-text">{value}</div>
     </div>
   );
 }
@@ -436,8 +439,8 @@ function Overlay({ children, error }) {
 
 function CenteredMessage({ children, error }) {
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-5">
-      <div className={`max-w-md text-center ${error ? "text-red-600" : "text-slate-600"}`}>{children}</div>
+    <div className="min-h-screen bg-soft-bg flex items-center justify-center p-5">
+      <div className={`max-w-md text-center ${error ? "text-red-600" : "text-soft-textMuted"}`}>{children}</div>
     </div>
   );
 }

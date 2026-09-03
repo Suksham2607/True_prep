@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, ConfigDict
+from pydantic import BaseModel, EmailStr, ConfigDict, Field
 from datetime import datetime
 
 
@@ -11,6 +11,19 @@ class UserCreate(BaseModel):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
+
+
+class UserUpdate(BaseModel):
+    """Profile page: only the display name is editable here. Email isn't -
+    it's embedded in the JWT's `sub` claim (see create_access_token), so
+    changing it would silently invalidate every token already issued for
+    this account until the user logged back in."""
+    name: str = Field(..., min_length=1, max_length=120)
+
+
+class ChangePasswordIn(BaseModel):
+    current_password: str
+    new_password: str = Field(..., min_length=6)
 
 
 class UserOut(BaseModel):

@@ -223,23 +223,25 @@ function FaceCheck() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-5">
+    <div className="min-h-screen bg-soft-bg p-5">
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold text-slate-800">Face Check</h1>
-          <button onClick={() => navigate("/dashboard")} className="text-sm text-slate-500 hover:text-slate-700">
+          <h1 className="text-2xl font-bold text-soft-text">Face Check</h1>
+          <button onClick={() => navigate("/dashboard")} className="text-sm text-soft-textMuted hover:text-soft-text">
             Back to dashboard
           </button>
         </div>
 
-        <p className="text-slate-600 mb-4 leading-relaxed">
+        <p className="text-soft-textMuted mb-4 leading-relaxed">
           This runs MediaPipe's face landmark model directly in your browser - your
           video never leaves this device. It's a live technical demo of the features
           that will feed into your Communication Readiness Score in a later
           milestone; nothing here is saved yet.
         </p>
 
-        <div className="relative bg-black rounded-lg overflow-hidden aspect-video mb-4">
+        {/* Live video feed + landmark overlay - left plain/functional,
+            only the corner radius was touched. */}
+        <div className="relative bg-black rounded-soft overflow-hidden aspect-video mb-4">
           <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover" />
           <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
 
@@ -259,14 +261,14 @@ function FaceCheck() {
             <button
               onClick={startTest}
               disabled={modelStatus !== "ready"}
-              className="bg-teal-700 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-teal-800 transition disabled:opacity-50"
+              className="bg-teal-700 text-white font-semibold px-5 py-2.5 rounded-soft-sm shadow-soft-flat-sm hover:shadow-soft-flat-hover transition disabled:opacity-50"
             >
               Start Face Check
             </button>
           ) : (
             <button
               onClick={stopTest}
-              className="bg-slate-800 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-slate-900 transition"
+              className="bg-slate-800 text-white font-semibold px-5 py-2.5 rounded-soft-sm shadow-soft-flat-sm hover:shadow-soft-flat-hover transition"
             >
               Stop
             </button>
@@ -282,14 +284,14 @@ function FaceCheck() {
         )}
 
         {finalStats && (
-          <div className="bg-white border border-slate-200 rounded-xl p-6">
-            <h2 className="font-bold text-slate-800 mb-4">Session summary</h2>
+          <div className="bg-soft-surface rounded-soft-lg p-6 shadow-soft-flat">
+            <h2 className="font-bold text-soft-text mb-4">Session summary</h2>
             <StatsGrid
               blinkRate={formatNumber(finalStats.blinkRate, "/min")}
               eyeContact={formatNumber(finalStats.eyeContact, "%")}
               engagement={formatNumber(finalStats.engagement)}
             />
-            <p className="text-xs text-slate-400 mt-4">
+            <p className="text-xs text-soft-textMuted mt-4">
               {finalStats.blinkCount} blink{finalStats.blinkCount === 1 ? "" : "s"} counted this
               session. These numbers reset each time you click Start - nothing is stored yet.
             </p>
@@ -318,9 +320,9 @@ function StatsGrid({ blinkRate, eyeContact, engagement }) {
 
 function StatCard({ label, value }) {
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-5 text-center">
-      <div className="text-xs text-slate-400 font-semibold mb-2">{label}</div>
-      <div className="text-2xl font-bold text-slate-800">{value}</div>
+    <div className="bg-soft-surface rounded-soft p-5 text-center shadow-soft-flat-sm">
+      <div className="text-xs text-soft-textMuted font-semibold mb-2">{label}</div>
+      <div className="text-2xl font-bold text-soft-text">{value}</div>
     </div>
   );
 }
@@ -339,8 +341,8 @@ function Overlay({ children, error }) {
 
 function CenteredMessage({ children, error }) {
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-5">
-      <div className={`max-w-md text-center ${error ? "text-red-600" : "text-slate-600"}`}>{children}</div>
+    <div className="min-h-screen bg-soft-bg flex items-center justify-center p-5">
+      <div className={`max-w-md text-center ${error ? "text-red-600" : "text-soft-textMuted"}`}>{children}</div>
     </div>
   );
 }

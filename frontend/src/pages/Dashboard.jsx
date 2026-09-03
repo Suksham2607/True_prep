@@ -141,12 +141,12 @@ function Dashboard() {
           ACCOUNT
         </div>
 
-        <button className={styles.menuItem} onClick={comingSoon}>
+        <button className={styles.menuItem} onClick={() => navigate("/profile")}>
           <span className={styles.menuIcon}>◯</span>
           <span>Profile</span>
         </button>
 
-        <button className={styles.menuItem} onClick={comingSoon}>
+        <button className={styles.menuItem} onClick={() => navigate("/settings")}>
           <span className={styles.menuIcon}>⚙</span>
           <span>Settings</span>
         </button>
@@ -272,7 +272,7 @@ function Dashboard() {
                   <p>Explore previous assessment results.</p>
                 </button>
 
-                <button className={styles.action} onClick={comingSoon}>
+                <button className={styles.action} onClick={() => navigate("/profile")}>
                   <div className={styles.actionIcon}>👤</div>
                   <h3>My Profile</h3>
                   <p>Manage your account information.</p>

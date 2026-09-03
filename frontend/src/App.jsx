@@ -10,6 +10,8 @@ import Calibration from "./pages/Calibration";
 import LiveAssessment from "./pages/LiveAssessment";
 import MockInterview from "./pages/MockInterview";
 import History from "./pages/History";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 
 // "/" doesn't have its own page - it just sends the visitor straight to
 // wherever they actually belong depending on whether they're logged in.
@@ -92,6 +94,22 @@ function App() {
           element={
             <RequireAuth>
               <History />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <RequireAuth>
+              <Profile />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <RequireAuth>
+              <Settings />
             </RequireAuth>
           }
         />

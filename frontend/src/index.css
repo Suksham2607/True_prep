@@ -1,3 +1,117 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ==========================================================================
+   Soft-UI / neumorphism design system
+   ==========================================================================
+   These custom properties are the single source of truth for the app's
+   soft-UI look. The Tailwind-utility pages get the same values via the
+   `soft.*` colors and `shadow-soft-*` utilities defined in
+   tailwind.config.js; the CSS-Module pages (Login, Register, Dashboard)
+   reference these variables directly since they don't go through Tailwind.
+   Keeping both in sync to the same numbers is what makes the two halves
+   of the app look like one consistent product. */
+:root {
+  --soft-bg: #e6ebf1;
+  --soft-surface: #e9edf3;
+  --soft-shadow-dark: #b9c2d0;
+  --soft-shadow-light: #ffffff;
+  --soft-text: #33415c;
+  --soft-text-muted: #7b8aa3;
+
+  --soft-radius: 18px;
+  --soft-radius-lg: 26px;
+  --soft-radius-sm: 12px;
+
+  --brand-50: #f0fdfa;
+  --brand-100: #ccfbf1;
+  --brand-400: #2dd4bf;
+  --brand-500: #14b8a6;
+  --brand-600: #0d9488;
+  --brand-700: #0f766e;
+  --brand-800: #115e59;
+
+  --shadow-flat: 9px 9px 18px var(--soft-shadow-dark), -9px -9px 18px var(--soft-shadow-light);
+  --shadow-flat-sm: 5px 5px 10px var(--soft-shadow-dark), -5px -5px 10px var(--soft-shadow-light);
+  --shadow-flat-lg: 14px 14px 28px var(--soft-shadow-dark), -14px -14px 28px var(--soft-shadow-light);
+  --shadow-flat-hover: 6px 6px 14px var(--soft-shadow-dark), -6px -6px 14px var(--soft-shadow-light);
+  --shadow-inset: inset 5px 5px 10px var(--soft-shadow-dark), inset -5px -5px 10px var(--soft-shadow-light);
+  --shadow-inset-sm: inset 3px 3px 6px var(--soft-shadow-dark), inset -3px -3px 6px var(--soft-shadow-light);
+}
+
+body {
+  background: var(--soft-bg);
+  color: var(--soft-text);
+}
+
+/* ---- Reusable global classes ----
+   Available to every page, including the CSS-Module ones (a module.css
+   selector can just reference these class names alongside its own -
+   className={`${styles.card} soft-raised`} - since these aren't scoped). */
+
+.soft-raised {
+  background: var(--soft-surface);
+  border-radius: var(--soft-radius);
+  box-shadow: var(--shadow-flat);
+  border: none;
+}
+
+.soft-inset {
+  background: var(--soft-surface);
+  border-radius: var(--soft-radius);
+  box-shadow: var(--shadow-inset);
+  border: none;
+}
+
+.soft-btn {
+  border: none;
+  border-radius: var(--soft-radius-sm);
+  background: var(--soft-surface);
+  box-shadow: var(--shadow-flat-sm);
+  color: var(--brand-700);
+  font-weight: 600;
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.soft-btn:hover {
+  box-shadow: var(--shadow-flat-hover);
+}
+.soft-btn:active {
+  box-shadow: var(--shadow-inset-sm);
+  transform: translateY(1px);
+}
+
+.soft-btn-primary {
+  border: none;
+  border-radius: var(--soft-radius-sm);
+  background: linear-gradient(145deg, var(--brand-600), var(--brand-700));
+  box-shadow: 6px 6px 14px #a9b6c4, -4px -4px 10px #ffffff;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+}
+.soft-btn-primary:hover {
+  opacity: 0.95;
+}
+.soft-btn-primary:active {
+  transform: translateY(1px);
+  box-shadow: 3px 3px 8px #a9b6c4, -2px -2px 6px #ffffff;
+}
+.soft-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.soft-input {
+  border: none;
+  border-radius: var(--soft-radius-sm);
+  background: var(--soft-surface);
+  box-shadow: var(--shadow-inset-sm);
+  color: var(--soft-text);
+  outline: none;
+}
+.soft-input:focus {
+  box-shadow: var(--shadow-inset-sm), 0 0 0 2px var(--brand-400);
+}

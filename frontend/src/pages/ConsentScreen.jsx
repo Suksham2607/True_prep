@@ -108,8 +108,8 @@ function ConsentScreen() {
   if (status === "already") {
     return (
       <CenteredCard>
-        <h1 className="text-2xl font-bold text-slate-800 mb-2">You're all set</h1>
-        <p className="text-slate-600 mb-6">
+        <h1 className="text-2xl font-bold text-soft-text mb-2">You're all set</h1>
+        <p className="text-soft-textMuted mb-6">
           You already granted camera/microphone consent
           {consentInfo?.consent_given_at &&
             ` on ${new Date(consentInfo.consent_given_at).toLocaleDateString()}`}
@@ -117,7 +117,7 @@ function ConsentScreen() {
         </p>
         <Link
           to="/dashboard"
-          className="inline-block bg-teal-700 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-teal-800 transition"
+          className="inline-block bg-teal-700 text-white font-semibold px-5 py-2.5 rounded-soft-sm shadow-soft-flat-sm hover:shadow-soft-flat-hover transition"
         >
           Back to dashboard
         </Link>
@@ -128,8 +128,8 @@ function ConsentScreen() {
   // status === "needed"
   return (
     <CenteredCard wide>
-      <h1 className="text-2xl font-bold text-slate-800 mb-2">Camera &amp; microphone access</h1>
-      <p className="text-slate-600 mb-6 leading-relaxed">
+      <h1 className="text-2xl font-bold text-soft-text mb-2">Camera &amp; microphone access</h1>
+      <p className="text-soft-textMuted mb-6 leading-relaxed">
         Practice sessions in TruePrep look at both what you say and how you say it - things
         like pacing, tone, and eye contact - to build your personalized communication
         readiness profile. That requires access to your camera and microphone.
@@ -139,7 +139,10 @@ function ConsentScreen() {
         Nothing is recorded or analyzed yet - that arrives in a later milestone.
       </p>
 
-      <div className="bg-black rounded-lg overflow-hidden aspect-video mb-4 flex items-center justify-center">
+      {/* Camera preview stays a plain black box - it's a real video feed,
+          not a decorative surface, so it's left out of the soft-UI shadow
+          treatment. */}
+      <div className="bg-black rounded-soft overflow-hidden aspect-video mb-4 flex items-center justify-center">
         {mediaState === "granted" ? (
           <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover" />
         ) : (
@@ -155,13 +158,13 @@ function ConsentScreen() {
         <button
           onClick={enableCamera}
           disabled={mediaState === "requesting"}
-          className="w-full bg-slate-800 text-white font-semibold py-2.5 rounded-lg hover:bg-slate-900 transition disabled:opacity-60 mb-4"
+          className="w-full bg-slate-800 text-white font-semibold py-2.5 rounded-soft-sm shadow-soft-flat-sm hover:shadow-soft-flat-hover transition disabled:opacity-60 mb-4"
         >
           {mediaState === "requesting" ? "Requesting..." : "Enable Camera & Microphone"}
         </button>
       )}
 
-      <label className="flex items-start gap-2 text-sm text-slate-600 mb-5">
+      <label className="flex items-start gap-2 text-sm text-soft-textMuted mb-5">
         <input
           type="checkbox"
           checked={agreeChecked}
@@ -178,12 +181,12 @@ function ConsentScreen() {
         <button
           onClick={handleContinue}
           disabled={mediaState !== "granted" || !agreeChecked || submitting}
-          className="flex-1 bg-teal-700 text-white font-semibold py-2.5 rounded-lg hover:bg-teal-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 bg-teal-700 text-white font-semibold py-2.5 rounded-soft-sm shadow-soft-flat-sm hover:shadow-soft-flat-hover active:shadow-soft-inset-sm transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {submitting ? "Saving..." : "Agree & Continue"}
         </button>
 
-        <Link to="/dashboard" className="text-sm text-slate-500 hover:text-slate-700">
+        <Link to="/dashboard" className="text-sm text-soft-textMuted hover:text-soft-text">
           Not now
         </Link>
       </div>
@@ -193,9 +196,9 @@ function ConsentScreen() {
 
 function CenteredCard({ children, wide }) {
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-5">
+    <div className="min-h-screen bg-soft-bg flex items-center justify-center p-5">
       <div
-        className={`w-full ${wide ? "max-w-xl text-left" : "max-w-md text-center"} bg-white rounded-2xl shadow-lg p-8`}
+        className={`w-full ${wide ? "max-w-xl text-left" : "max-w-md text-center"} bg-soft-surface rounded-soft-lg shadow-soft-flat p-8`}
       >
         {children}
       </div>
