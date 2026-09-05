@@ -32,6 +32,23 @@ function formatDateTime(isoString) {
   return new Date(isoString).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
 }
 
+// Mock interviews have no rule-based score the way Live Assessment
+// sessions do (there's no baseline to compare a free-form conversation
+// against), so rather than invent a number that doesn't mean anything,
+// History shows what's actually measurable: how long the interview ran
+// and how many questions got answered before it ended.
+function formatDuration(startedAt, endedAt) {
+  if (!endedAt) return null;
+  const totalSeconds = Math.max(0, Math.round((new Date(endedAt) - new Date(startedAt)) / 1000));
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
+}
+
+function answeredCount(transcript) {
+  return transcript.filter((turn) => turn.role === "user").length;
+}
+
 const TREND_DISPLAY = {
   improving: { arrow: "▲", text: "text-emerald-600", label: "Improving" },
   declining: { arrow: "▼", text: "text-red-600", label: "Declining" },
@@ -42,18 +59,21 @@ const TREND_DISPLAY = {
 function History() {
   const [trends, setTrends] = useState(null);
   const [sessions, setSessions] = useState([]);
+  const [interviews, setInterviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     async function load() {
       try {
-        const [trendsRes, sessionsRes] = await Promise.all([
+        const [trendsRes, sessionsRes, interviewsRes] = await Promise.all([
           api.get("/api/sessions/trends"),
           api.get("/api/sessions/"),
+          api.get("/api/mock-interview/"),
         ]);
         setTrends(trendsRes.data);
         setSessions(sessionsRes.data);
+        setInterviews(interviewsRes.data);
       } catch {
         setError("Couldn't load your history. Please try again.");
       } finally {
@@ -135,9 +155,9 @@ function History() {
           </div>
         </div>
 
-        {/* SESSION LIST */}
-        <div className="bg-soft-surface rounded-soft-lg p-6 shadow-soft-flat">
-          <h2 className="font-bold text-soft-text mb-4">All Sessions</h2>
+        {/* LIVE ASSESSMENT SESSIONS */}
+        <div className="bg-soft-surface rounded-soft-lg p-6 mb-6 shadow-soft-flat">
+          <h2 className="font-bold text-soft-text mb-4">Live Assessments</h2>
           {sessions.length === 0 ? (
             <p className="text-soft-textMuted text-sm">
               No sessions yet.{" "}
@@ -162,6 +182,52 @@ function History() {
                   </div>
                 </div>
               ))}
+            </div>
+          )}
+        </div>
+
+        {/* MOCK INTERVIEWS - these have no rule-based score (see
+            formatDuration's comment above), so instead of a number this
+            list shows what actually happened: how long it ran and how
+            many questions got answered. */}
+        <div className="bg-soft-surface rounded-soft-lg p-6 shadow-soft-flat">
+          <h2 className="font-bold text-soft-text mb-4">Mock Interviews</h2>
+          {interviews.length === 0 ? (
+            <p className="text-soft-textMuted text-sm">
+              No mock interviews yet.{" "}
+              <Link to="/dashboard" className="text-teal-700 underline">
+                Start your first mock interview
+              </Link>
+              .
+            </p>
+          ) : (
+            <div className="divide-y divide-slate-200/60">
+              {interviews.map((interview) => {
+                const duration = formatDuration(interview.started_at, interview.ended_at);
+                const answered = answeredCount(interview.transcript);
+                return (
+                  <div key={interview.id} className="flex items-center justify-between py-3">
+                    <div>
+                      <div className="text-sm font-medium text-soft-text">
+                        Interview #{interview.id}
+                        {interview.role ? ` — ${interview.role}` : ""}
+                      </div>
+                      <div className="text-xs text-soft-textMuted">{formatDateTime(interview.started_at)}</div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <StatusBadge status={interview.status} />
+                      <div className="text-right">
+                        <div className="text-sm font-semibold text-soft-text">
+                          {duration ?? "In progress"}
+                        </div>
+                        <div className="text-xs text-soft-textMuted">
+                          {answered} question{answered === 1 ? "" : "s"} answered
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
