@@ -3,12 +3,6 @@ import { useNavigate } from "react-router-dom";
 import api, { clearToken } from "../services/api";
 import styles from "./Dashboard.module.css";
 
-// Sessions/scoring features don't exist yet (that's Milestones 4-7), so
-// anything that depends on them shows this instead of a dead link.
-function comingSoon() {
-  alert("This part of TruePrep hasn't been built yet — coming in a later milestone.");
-}
-
 function formatDate(isoString) {
   return new Date(isoString).toLocaleString(undefined, {
     dateStyle: "medium",
@@ -124,12 +118,7 @@ function Dashboard() {
 
         <button className={styles.menuItem} onClick={startAssessment}>
           <span className={styles.menuIcon}>◉</span>
-          <span>Detection</span>
-        </button>
-
-        <button className={styles.menuItem} onClick={comingSoon}>
-          <span className={styles.menuIcon}>⌁</span>
-          <span>Predictions</span>
+          <span>Assessment</span>
         </button>
 
         <button className={styles.menuItem} onClick={() => navigate("/history")}>
