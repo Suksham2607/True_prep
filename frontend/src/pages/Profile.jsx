@@ -19,6 +19,13 @@ function formatDate(isoString) {
   return new Date(isoString).toLocaleDateString(undefined, { dateStyle: "long" });
 }
 
+const ROLE_LABELS = {
+  candidate: "Candidate",
+  coach: "Coach",
+  institute_admin: "Institute Admin",
+  researcher: "Researcher",
+};
+
 function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -95,7 +102,12 @@ function Profile() {
               {initialsFor(user.name)}
             </div>
             <div>
-              <div className="text-lg font-semibold text-soft-text">{user.name}</div>
+              <div className="flex items-center gap-2">
+                <div className="text-lg font-semibold text-soft-text">{user.name}</div>
+                <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-teal-50 text-teal-700">
+                  {ROLE_LABELS[user.role] || user.role}
+                </span>
+              </div>
               <div className="text-sm text-soft-textMuted">{user.email}</div>
             </div>
           </div>

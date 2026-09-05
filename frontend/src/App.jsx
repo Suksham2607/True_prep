@@ -12,6 +12,7 @@ import MockInterview from "./pages/MockInterview";
 import History from "./pages/History";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
+import CoachTeam from "./pages/CoachTeam";
 
 // "/" doesn't have its own page - it just sends the visitor straight to
 // wherever they actually belong depending on whether they're logged in.
@@ -110,6 +111,14 @@ function App() {
           element={
             <RequireAuth>
               <Settings />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/team"
+          element={
+            <RequireAuth>
+              <CoachTeam />
             </RequireAuth>
           }
         />

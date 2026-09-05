@@ -34,6 +34,7 @@ class UserOut(UTCTimestampModel):
     email: EmailStr
     created_at: datetime
     has_given_consent: bool
+    role: str
 
     model_config = ConfigDict(from_attributes=True)
 

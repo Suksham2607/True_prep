@@ -126,6 +126,17 @@ function Dashboard() {
           <span>History</span>
         </button>
 
+        {/* RBAC milestone: only a coach/institute_admin account sees this -
+            everyone else's sidebar is unchanged. The API would 403 a
+            candidate hitting /api/coach/candidates directly anyway, but
+            there's no reason to show a link that would just fail. */}
+        {["coach", "institute_admin"].includes(user?.role) && (
+          <button className={styles.menuItem} onClick={() => navigate("/team")}>
+            <span className={styles.menuIcon}>◈</span>
+            <span>Team</span>
+          </button>
+        )}
+
         <div className={styles.menuTitle} style={{ marginTop: "28px" }}>
           ACCOUNT
         </div>

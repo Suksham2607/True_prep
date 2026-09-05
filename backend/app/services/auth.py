@@ -72,6 +72,32 @@ def get_current_user(
     return user
 
 
+def require_role(*allowed_roles: str):
+    """
+    RBAC guard for routes that only certain roles should reach (e.g. a
+    coach's view of their candidates' sessions). Used as a dependency:
+
+        @router.get("/api/coach/candidates")
+        def list_candidates(user: User = Depends(require_role("coach", "institute_admin"))):
+            ...
+
+    Layers on top of get_current_user rather than replacing it, so a
+    request still needs a valid token first - an invalid/missing token
+    still 401s exactly as before; only a valid token whose user has the
+    wrong role gets the new 403 here.
+    """
+
+    def dependency(current_user: User = Depends(get_current_user)) -> User:
+        if current_user.role not in allowed_roles:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You don't have permission to access this",
+            )
+        return current_user
+
+    return dependency
+
+
 def update_user_name(db: Session, user: User, name: str) -> User:
     """Profile page: the only field a user can edit about themselves.
     UserUpdate's min_length=1 already rejects an empty string, but not a
