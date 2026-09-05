@@ -3,6 +3,8 @@ from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 
+from app.schemas.common import UTCTimestampModel
+
 
 class BaselineProfileCreate(BaseModel):
     """
@@ -30,7 +32,7 @@ class BaselineProfileCreate(BaseModel):
     recovery_rate: Optional[float] = None
 
 
-class BaselineProfileOut(BaselineProfileCreate):
+class BaselineProfileOut(BaselineProfileCreate, UTCTimestampModel):
     """Adds the fields that are set by the server, not the client."""
     id: int
     user_id: int

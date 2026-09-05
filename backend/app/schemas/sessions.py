@@ -3,8 +3,10 @@ from typing import Literal, Optional
 
 from pydantic import BaseModel, ConfigDict
 
+from app.schemas.common import UTCTimestampModel
 
-class SessionOut(BaseModel):
+
+class SessionOut(UTCTimestampModel):
     """Shape of a session when we send it back to the frontend."""
     id: int
     user_id: int

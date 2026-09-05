@@ -3,14 +3,16 @@ from typing import List, Literal, Optional
 
 from pydantic import BaseModel
 
+from app.schemas.common import UTCTimestampModel
 
-class ScorePoint(BaseModel):
+
+class ScorePoint(UTCTimestampModel):
     session_id: int
     started_at: datetime
     overall_readiness_score: float
 
 
-class FeatureTrendPoint(BaseModel):
+class FeatureTrendPoint(UTCTimestampModel):
     session_id: int
     started_at: datetime
     value: Optional[float] = None

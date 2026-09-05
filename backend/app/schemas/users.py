@@ -1,6 +1,8 @@
 from pydantic import BaseModel, EmailStr, ConfigDict, Field
 from datetime import datetime
 
+from app.schemas.common import UTCTimestampModel
+
 
 class UserCreate(BaseModel):
     name: str
@@ -26,7 +28,7 @@ class ChangePasswordIn(BaseModel):
     new_password: str = Field(..., min_length=6)
 
 
-class UserOut(BaseModel):
+class UserOut(UTCTimestampModel):
     id: int
     name: str
     email: EmailStr

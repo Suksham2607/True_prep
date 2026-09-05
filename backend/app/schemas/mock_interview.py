@@ -3,6 +3,8 @@ from typing import List, Optional
 
 from pydantic import BaseModel
 
+from app.schemas.common import UTCTimestampModel
+
 
 class InterviewTurn(BaseModel):
     role: str  # "assistant" | "user"
@@ -34,7 +36,7 @@ class EndInterviewOut(BaseModel):
     transcript: List[InterviewTurn]
 
 
-class MockInterviewOut(BaseModel):
+class MockInterviewOut(UTCTimestampModel):
     """Full interview state - not built with from_attributes, since
     transcript_json needs to be parsed from a JSON string first (see
     app/services/mock_interview.py's get_interview_out)."""
